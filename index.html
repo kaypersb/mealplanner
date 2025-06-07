@@ -455,6 +455,16 @@
         }
 
         function displayAIResults(aiData, budget) {
+            // Determine the source and display appropriate badge
+            let sourceBadge = '';
+            if (aiData.source === 'smart_generation') {
+                sourceBadge = '<div style="background: rgba(34, 197, 94, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; color: #22c55e;">🧠 Smart AI-Enhanced Generation</div>';
+            } else if (aiData.source === 'fallback_generation') {
+                sourceBadge = '<div style="background: rgba(255, 107, 157, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; color: #ff6b9d;">✨ Personalized for Your Family</div>';
+            } else {
+                sourceBadge = '<div style="background: rgba(34, 197, 94, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; color: #22c55e;">🤖 AI-Generated Plan</div>';
+            }
+
             // Display AI-generated meal plan
             const mealPlanHTML = Object.entries(aiData.mealPlan).map(([day, meals]) => `
                 <div class="day-card">
@@ -476,6 +486,8 @@
 
             // Display AI-generated grocery list
             const groceryHTML = Object.entries(aiData.groceryList).map(([category, items]) => {
+                if (items.length === 0) return ''; // Skip empty categories
+                
                 const categoryHTML = items.map(item => `
                     <div class="grocery-item">
                         <span>${item.name} (${item.quantity} ${item.unit})</span>
@@ -494,16 +506,14 @@
             const budgetColor = totalCost <= budget ? '#48bb78' : '#e53e3e';
 
             document.getElementById('mealPlan').innerHTML = `
-                <h3>🍽️ Your AI-Generated Meal Plan</h3>
-                <div style="background: rgba(255, 107, 157, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; color: #ff6b9d;">
-                    ✨ Powered by Vercel AI Gateway - Free during Alpha!
-                </div>
+                <h3>🍽️ Your Personalized Meal Plan</h3>
+                ${sourceBadge}
                 ${mealPlanHTML}
-                ${aiData.tips ? `<div style="background: rgba(255, 107, 157, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px; border-left: 4px solid #ff6b9d;"><strong>💡 AI Tips:</strong> ${aiData.tips}</div>` : ''}
+                ${aiData.tips ? `<div style="background: rgba(255, 107, 157, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px; border-left: 4px solid #ff6b9d;"><strong>💡 Smart Tips:</strong> ${aiData.tips}</div>` : ''}
             `;
 
             document.getElementById('groceryList').innerHTML = `
-                <h3>🛒 AI-Generated Shopping List</h3>
+                <h3>🛒 Your Shopping List</h3>
                 ${groceryHTML}
                 <div class="total-budget" style="background: ${budgetColor}">
                     Total Cost: ₱${totalCost} / ₱${budget}<br>
