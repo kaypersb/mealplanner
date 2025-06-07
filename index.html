@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Meal Planner PH</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .form-section, .results-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-section h2, .results-section h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .meal-plan, .grocery-list {
+            margin-bottom: 30px;
+        }
+
+        .day-card {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .day-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .meal {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .meal-type {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .grocery-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .grocery-category {
+            background: #667eea;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+        }
+
+        .price {
+            color: #e53e3e;
+            font-weight: 600;
+        }
+
+        .total-budget {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍽️ AI Meal Planner PH</h1>
+            <p>Smart meal planning with Filipino ingredients and budget-friendly options</p>
+        </div>
+
+        <div class="main-content">
+            <div class="form-section">
+                <h2>📝 Tell us about your preferences</h2>
+                <form id="mealPlanForm">
+                    <div class="form-group">
+                        <label for="people">Number of people:</label>
+                        <input type="number" id="people" min="1" max="10" value="2" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="days">Days to plan:</label>
+                        <select id="days" required>
+                            <option value="3">3 days</option>
+                            <option value="5">5 days</option>
+                            <option value="7" selected>1 week</option>
+                            <option value="14">2 weeks</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget">Weekly budget (PHP):</label>
+                        <input type="number" id="budget" min="500" max="10000" value="2000" step="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cuisine">Preferred cuisine:</label>
+                        <select id="cuisine">
+                            <option value="filipino">Filipino</option>
+                            <option value="asian">Asian Fusion</option>
+                            <option value="western">Western</option>
+                            <option value="mixed" selected>Mixed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dietary restrictions:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="vegetarian" value="vegetarian">
+                                <label for="vegetarian">Vegetarian</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="vegan" value="vegan">
+                                <label for="vegan">Vegan</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="halal" value="halal">
+                                <label for="halal">Halal</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="no-pork" value="no-pork">
+                                <label for="no-pork">No Pork</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="no-seafood" value="no-seafood">
+                                <label for="no-seafood">No Seafood</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="diabetic" value="diabetic">
+                                <label for="diabetic">Diabetic-friendly</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="allergies">Allergies or foods to avoid:</label>
+                        <textarea id="allergies" rows="3" placeholder="e.g., nuts, shellfish, dairy..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preferences">Additional preferences:</label>
+                        <textarea id="preferences" rows="3" placeholder="e.g., prefer chicken, love spicy food, quick meals..."></textarea>
+                    </div>
+
+                    <button type="submit" class="generate-btn" id="generateBtn">
+                        🤖 Generate My Meal Plan
+                    </button>
+                </form>
+            </div>
+
+            <div class="results-section">
+                <h2>📋 Your AI-Generated Plan</h2>
+                <div id="loadingState" class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>AI is creating your personalized meal plan...</p>
+                </div>
+                
+                <div id="results" style="display: none;">
+                    <div class="meal-plan" id="mealPlan"></div>
+                    <div class="grocery-list" id="groceryList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filipino dishes database with estimated prices
+        const filipinoDishes = {
+            breakfast: [
+                { name: "Tapsilog", ingredients: ["beef tapa", "rice", "eggs", "onions"], price: 180 },
+                { name: "Bangsilog", ingredients: ["bangus", "rice", "eggs", "tomatoes"], price: 160 },
+                { name: "Champorado", ingredients: ["sticky rice", "cocoa powder", "milk", "sugar"], price: 80 },
+                { name: "Pancit Canton", ingredients: ["canton noodles", "vegetables", "soy sauce", "meat"], price: 120 },
+                { name: "Arroz Caldo", ingredients: ["rice", "chicken", "ginger", "onions", "garlic"], price: 100 }
+            ],
+            lunch: [
+                { name: "Adobo Chicken", ingredients: ["chicken", "soy sauce", "vinegar", "garlic", "bay leaves", "rice"], price: 200 },
+                { name: "Sinigang na Baboy", ingredients: ["pork", "tamarind", "vegetables", "tomatoes", "onions", "rice"], price: 250 },
+                { name: "Chicken Curry", ingredients: ["chicken", "curry powder", "coconut milk", "potatoes", "rice"], price: 220 },
+                { name: "Beef Caldereta", ingredients: ["beef", "tomato sauce", "potatoes", "carrots", "bell peppers", "rice"], price: 280 },
+                { name: "Fish Escabeche", ingredients: ["fish", "vegetables", "sweet and sour sauce", "rice"], price: 200 }
+            ],
+            dinner: [
+                { name: "Pork Menudo", ingredients: ["pork", "liver", "tomato sauce", "potatoes", "carrots", "rice"], price: 250 },
+                { name: "Chicken Afritada", ingredients: ["chicken", "tomato sauce", "potatoes", "carrots", "rice"], price: 230 },
+                { name: "Bicol Express", ingredients: ["pork", "coconut milk", "chili peppers", "shrimp paste", "rice"], price: 240 },
+                { name: "Kare-kare", ingredients: ["oxtail", "peanut sauce", "vegetables", "bagoong", "rice"], price: 300 },
+                { name: "Ginisang Monggo", ingredients: ["mung beans", "pork", "vegetables", "rice"], price: 150 }
+            ]
+        };
+
+        // Grocery items with Philippine prices (PHP)
+        const groceryPrices = {
+            "rice": { price: 50, unit: "kg", category: "Staples" },
+            "chicken": { price: 180, unit: "kg", category: "Meat" },
+            "pork": { price: 250, unit: "kg", category: "Meat" },
+            "beef": { price: 400, unit: "kg", category: "Meat" },
+            "fish": { price: 200, unit: "kg", category: "Seafood" },
+            "eggs": { price: 120, unit: "dozen", category: "Dairy" },
+            "onions": { price: 80, unit: "kg", category: "Vegetables" },
+            "garlic": { price: 200, unit: "kg", category: "Vegetables" },
+            "tomatoes": { price: 100, unit: "kg", category: "Vegetables" },
+            "potatoes": { price: 80, unit: "kg", category: "Vegetables" },
+            "carrots": { price: 120, unit: "kg", category: "Vegetables" },
+            "bell peppers": { price: 150, unit: "kg", category: "Vegetables" },
+            "coconut milk": { price: 25, unit: "can", category: "Pantry" },
+            "soy sauce": { price: 30, unit: "bottle", category: "Condiments" },
+            "vinegar": { price: 20, unit: "bottle", category: "Condiments" },
+            "cooking oil": { price: 80, unit: "bottle", category: "Pantry" },
+            "salt": { price: 15, unit: "pack", category: "Condiments" },
+            "sugar": { price: 60, unit: "kg", category: "Pantry" },
+            "milk": { price: 80, unit: "liter", category: "Dairy" }
+        };
+
+        document.getElementById('mealPlanForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generateMealPlan();
+        });
+
+        function generateMealPlan() {
+            const formData = new FormData(document.getElementById('mealPlanForm'));
+            const preferences = {
+                people: parseInt(formData.get('people')) || 2,
+                days: parseInt(formData.get('days')) || 7,
+                budget: parseInt(formData.get('budget')) || 2000,
+                cuisine: formData.get('cuisine') || 'mixed',
+                restrictions: Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value),
+                allergies: formData.get('allergies') || '',
+                preferences: formData.get('preferences') || ''
+            };
+
+            showLoading();
+            
+            // Simulate AI processing
+            setTimeout(() => {
+                const mealPlan = createMealPlan(preferences);
+                const groceryList = createGroceryList(mealPlan, preferences);
+                displayResults(mealPlan, groceryList, preferences.budget);
+            }, 2000);
+        }
+
+        function showLoading() {
+            document.getElementById('generateBtn').disabled = true;
+            document.getElementById('loadingState').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+        }
+
+        function createMealPlan(preferences) {
+            const plan = {};
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            
+            for (let i = 0; i < preferences.days; i++) {
+                const day = days[i];
+                plan[day] = {
+                    breakfast: getRandomDish('breakfast', preferences),
+                    lunch: getRandomDish('lunch', preferences),
+                    dinner: getRandomDish('dinner', preferences)
+                };
+            }
+            
+            return plan;
+        }
+
+        function getRandomDish(mealType, preferences) {
+            const dishes = filipinoDishes[mealType];
+            let availableDishes = dishes.filter(dish => {
+                // Simple filtering based on restrictions
+                if (preferences.restrictions.includes('vegetarian') && 
+                    dish.ingredients.some(ing => ['chicken', 'pork', 'beef', 'fish'].includes(ing))) {
+                    return false;
+                }
+                if (preferences.restrictions.includes('no-pork') && 
+                    dish.ingredients.some(ing => ing.includes('pork'))) {
+                    return false;
+                }
+                return true;
+            });
+            
+            if (availableDishes.length === 0) availableDishes = dishes;
+            
+            return availableDishes[Math.floor(Math.random() * availableDishes.length)];
+        }
+
+        function createGroceryList(mealPlan, preferences) {
+            const ingredients = {};
+            const categories = {};
+            
+            // Collect all ingredients
+            Object.values(mealPlan).forEach(day => {
+                ['breakfast', 'lunch', 'dinner'].forEach(meal => {
+                    day[meal].ingredients.forEach(ingredient => {
+                        if (!ingredients[ingredient]) {
+                            ingredients[ingredient] = 0;
+                        }
+                        ingredients[ingredient] += 1;
+                    });
+                });
+            });
+
+            // Calculate quantities and organize by category
+            Object.keys(ingredients).forEach(ingredient => {
+                const baseIngredient = ingredient.toLowerCase();
+                const groceryItem = groceryPrices[baseIngredient] || groceryPrices[ingredient] || { price: 50, unit: 'pack', category: 'Other' };
+                
+                const quantity = Math.ceil(ingredients[ingredient] * preferences.people / 7);
+                const totalPrice = quantity * groceryItem.price;
+                
+                if (!categories[groceryItem.category]) {
+                    categories[groceryItem.category] = [];
+                }
+                
+                categories[groceryItem.category].push({
+                    name: ingredient,
+                    quantity: quantity,
+                    unit: groceryItem.unit,
+                    price: totalPrice
+                });
+            });
+
+            return categories;
+        }
+
+        function displayResults(mealPlan, groceryList, budget) {
+            // Display meal plan
+            const mealPlanHTML = Object.entries(mealPlan).map(([day, meals]) => `
+                <div class="day-card">
+                    <div class="day-title">${day}</div>
+                    <div class="meal">
+                        <div class="meal-type">🌅 Breakfast</div>
+                        <div>${meals.breakfast.name}</div>
+                    </div>
+                    <div class="meal">
+                        <div class="meal-type">☀️ Lunch</div>
+                        <div>${meals.lunch.name}</div>
+                    </div>
+                    <div class="meal">
+                        <div class="meal-type">🌙 Dinner</div>
+                        <div>${meals.dinner.name}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Display grocery list
+            let totalCost = 0;
+            const groceryHTML = Object.entries(groceryList).map(([category, items]) => {
+                const categoryHTML = items.map(item => {
+                    totalCost += item.price;
+                    return `
+                        <div class="grocery-item">
+                            <span>${item.name} (${item.quantity} ${item.unit})</span>
+                            <span class="price">₱${item.price}</span>
+                        </div>
+                    `;
+                }).join('');
+                
+                return `
+                    <div class="grocery-category">${category}</div>
+                    ${categoryHTML}
+                `;
+            }).join('');
+
+            const budgetStatus = totalCost <= budget ? 'Within Budget! 🎉' : 'Over Budget ⚠️';
+            const budgetColor = totalCost <= budget ? '#48bb78' : '#e53e3e';
+
+            document.getElementById('mealPlan').innerHTML = `
+                <h3>🍽️ Your Weekly Meal Plan</h3>
+                ${mealPlanHTML}
+            `;
+
+            document.getElementById('groceryList').innerHTML = `
+                <h3>🛒 Shopping List</h3>
+                ${groceryHTML}
+                <div class="total-budget" style="background: ${budgetColor}">
+                    Total Cost: ₱${totalCost} / ₱${budget}<br>
+                    ${budgetStatus}
+                </div>
+            `;
+
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('generateBtn').disabled = false;
+        }
+    </script>
+</body>
+</html>
