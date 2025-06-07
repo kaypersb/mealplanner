@@ -657,17 +657,33 @@
         }
 
         function displayAIResults(aiData, budget) {
-            // Determine the source and display appropriate badge
+            // Enhanced source detection and display
             let sourceBadge = '';
-            if (aiData.source === 'ai_generated') {
-                sourceBadge = '<div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 12px; border-radius: 10px; margin-bottom: 15px; font-size: 0.95rem; color: white; text-align: center; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">🤖 AI-Generated Creative Meal Plan</div>';
-            } else if (aiData.source === 'enhanced_smart_generation') {
-                sourceBadge = '<div style="background: rgba(34, 197, 94, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; color: #22c55e;">🧠 Smart Algorithm (AI Fallback)</div>';
-            } else {
-                sourceBadge = '<div style="background: rgba(34, 197, 94, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; color: #22c55e;">✨ Personalized Meal Plan</div>';
+            let sourceDescription = '';
+            
+            switch(aiData.source) {
+                case 'huggingface_ai':
+                    sourceBadge = '<div style="background: linear-gradient(135deg, #ff6b35, #f7931e); padding: 12px; border-radius: 10px; margin-bottom: 15px; font-size: 0.95rem; color: white; text-align: center; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);">🤖 Hugging Face AI Generated</div>';
+                    sourceDescription = 'Real AI creativity from Hugging Face models';
+                    break;
+                case 'ai_enhanced_smart':
+                    sourceBadge = '<div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 12px; border-radius: 10px; margin-bottom: 15px; font-size: 0.95rem; color: white; text-align: center; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">🧠 AI-Enhanced Smart Generation</div>';
+                    sourceDescription = 'AI-guided intelligent meal planning';
+                    break;
+                case 'ai_style_generation':
+                    sourceBadge = '<div style="background: linear-gradient(135deg, #10b981, #059669); padding: 12px; border-radius: 10px; margin-bottom: 15px; font-size: 0.95rem; color: white; text-align: center; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">✨ AI-Style Creative Planning</div>';
+                    sourceDescription = 'Creative algorithm with AI-like intelligence';
+                    break;
+                case 'enhanced_smart_generation':
+                    sourceBadge = '<div style="background: rgba(34, 197, 94, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; color: #22c55e;">🧠 Smart Algorithm (Enhanced)</div>';
+                    sourceDescription = 'Advanced intelligent meal planning';
+                    break;
+                default:
+                    sourceBadge = '<div style="background: rgba(34, 197, 94, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; color: #22c55e;">✨ Personalized Meal Plan</div>';
+                    sourceDescription = 'Customized for your preferences';
             }
 
-            // Display meal plan with enhanced layout for AI responses
+            // Display meal plan with enhanced layout
             const mealPlanHTML = Object.entries(aiData.mealPlan).map(([day, meals]) => `
                 <div class="day-card">
                     <div class="day-title">${day}</div>
@@ -710,35 +726,50 @@
             const budgetStatus = totalCost <= budget ? 'Within Budget! 🎉' : 'Over Budget ⚠️';
             const budgetColor = totalCost <= budget ? '#48bb78' : '#e53e3e';
 
-            // Enhanced display with AI-specific features
+            // Enhanced content based on AI source
             let enhancedContent = '';
-            if (aiData.source === 'ai_generated') {
-                enhancedContent = `
-                    ${aiData.cookingTips ? `
-                        <div style="background: rgba(255, 107, 157, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #ff6b9d;">
-                            <strong>👩‍🍳 AI Cooking Tips:</strong>
-                            <ul style="margin: 8px 0 0 20px;">
-                                ${aiData.cookingTips.map(tip => `<li style="margin: 4px 0;">${tip}</li>`).join('')}
-                            </ul>
-                        </div>
-                    ` : ''}
-                    
-                    ${aiData.nutritionNotes ? `
-                        <div style="background: rgba(34, 197, 94, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #22c55e;">
-                            <strong>🥗 Nutrition Notes:</strong> ${aiData.nutritionNotes}
-                        </div>
-                    ` : ''}
-                    
-                    ${aiData.shoppingStrategy ? `
-                        <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #3b82f6;">
-                            <strong>🛒 Shopping Strategy:</strong> ${aiData.shoppingStrategy}
-                        </div>
-                    ` : ''}
+            
+            // AI Insights section
+            if (aiData.aiInsights) {
+                enhancedContent += `
+                    <div style="background: rgba(255, 107, 157, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #ff6b9d;">
+                        <strong>🤖 AI Insights:</strong> ${aiData.aiInsights}
+                    </div>
+                `;
+            }
+            
+            // Cooking Tips
+            if (aiData.cookingTips && Array.isArray(aiData.cookingTips)) {
+                enhancedContent += `
+                    <div style="background: rgba(255, 107, 157, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #ff6b9d;">
+                        <strong>👩‍🍳 Smart Cooking Tips:</strong>
+                        <ul style="margin: 8px 0 0 20px;">
+                            ${aiData.cookingTips.map(tip => `<li style="margin: 4px 0;">${tip}</li>`).join('')}
+                        </ul>
+                    </div>
                 `;
             } else if (aiData.tips) {
-                enhancedContent = `
-                    <div style="background: rgba(255, 107, 157, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px; border-left: 4px solid #ff6b9d;">
+                enhancedContent += `
+                    <div style="background: rgba(255, 107, 157, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #ff6b9d;">
                         <strong>💡 Smart Tips:</strong> ${aiData.tips}
+                    </div>
+                `;
+            }
+            
+            // Nutrition Notes
+            if (aiData.nutritionNotes) {
+                enhancedContent += `
+                    <div style="background: rgba(34, 197, 94, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #22c55e;">
+                        <strong>🥗 Nutrition Overview:</strong> ${aiData.nutritionNotes}
+                    </div>
+                `;
+            }
+            
+            // Shopping Strategy
+            if (aiData.shoppingStrategy) {
+                enhancedContent += `
+                    <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #3b82f6;">
+                        <strong>🛒 Shopping Strategy:</strong> ${aiData.shoppingStrategy}
                     </div>
                 `;
             }
@@ -750,12 +781,12 @@
                 ${enhancedContent}
             `;
 
-            // Enhanced grocery list with budget breakdown
+            // Budget breakdown display
             let budgetBreakdownHTML = '';
             if (aiData.budgetBreakdown) {
                 budgetBreakdownHTML = `
                     <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px; margin: 15px 0;">
-                        <strong>📊 Budget Breakdown:</strong>
+                        <strong>📊 Budget Allocation:</strong>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 8px;">
                             ${Object.entries(aiData.budgetBreakdown).map(([category, amount]) => 
                                 `<div style="text-align: center; padding: 8px; background: rgba(255, 107, 157, 0.1); border-radius: 6px;">
