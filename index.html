@@ -13,9 +13,9 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
             min-height: 100vh;
-            color: #333;
+            color: #e2e8f0;
         }
 
         .container {
@@ -35,6 +35,10 @@
             font-size: 3rem;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #ff6b9d, #ffa8c5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .header p {
@@ -50,15 +54,16 @@
         }
 
         .form-section, .results-section {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(45, 55, 72, 0.95);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .form-section h2, .results-section h2 {
-            color: #4a5568;
+            color: #ff6b9d;
             margin-bottom: 20px;
             font-size: 1.5rem;
         }
@@ -71,22 +76,24 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #2d3748;
+            color: #e2e8f0;
         }
 
         input, select, textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #4a5568;
             border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s ease;
+            background: #2d3748;
+            color: #e2e8f0;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #ff6b9d;
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.2);
         }
 
         .checkbox-group {
@@ -108,7 +115,7 @@
         }
 
         .generate-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
             color: white;
             border: none;
             padding: 15px 30px;
@@ -123,7 +130,7 @@
 
         .generate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 20px rgba(255, 107, 157, 0.4);
         }
 
         .generate-btn:disabled {
@@ -393,7 +400,7 @@
             generateMealPlan();
         });
 
-        function generateMealPlan() {
+        async function generateMealPlan() {
             const formData = new FormData(document.getElementById('mealPlanForm'));
             const preferences = {
                 people: parseInt(formData.get('people')) || 2,
@@ -407,12 +414,106 @@
 
             showLoading();
             
-            // Simulate AI processing
-            setTimeout(() => {
-                const mealPlan = createMealPlan(preferences);
-                const groceryList = createGroceryList(mealPlan, preferences);
-                displayResults(mealPlan, groceryList, preferences.budget);
-            }, 2000);
+            try {
+                // Try AI generation through Vercel AI Gateway
+                const aiResponse = await generateWithVercelAI(preferences);
+                if (aiResponse && aiResponse.success) {
+                    displayAIResults(aiResponse.data, preferences.budget);
+                    return;
+                }
+            } catch (error) {
+                console.error('AI generation failed, using fallback:', error);
+            }
+            
+            // Fallback to static generation
+            console.log('Using fallback static generation');
+            const mealPlan = createMealPlan(preferences);
+            const groceryList = createGroceryList(mealPlan, preferences);
+            displayResults(mealPlan, groceryList, preferences.budget);
+        }
+
+        async function generateWithVercelAI(preferences) {
+            try {
+                const response = await fetch('/api/generate-meal-plan-vercel', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ preferences })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed: ${response.status}`);
+                }
+
+                return await response.json();
+                
+            } catch (error) {
+                console.error('Vercel AI call failed:', error);
+                return null;
+            }
+        }
+
+        function displayAIResults(aiData, budget) {
+            // Display AI-generated meal plan
+            const mealPlanHTML = Object.entries(aiData.mealPlan).map(([day, meals]) => `
+                <div class="day-card">
+                    <div class="day-title">${day}</div>
+                    <div class="meal">
+                        <div class="meal-type">🌅 Breakfast</div>
+                        <div>${meals.breakfast}</div>
+                    </div>
+                    <div class="meal">
+                        <div class="meal-type">☀️ Lunch</div>
+                        <div>${meals.lunch}</div>
+                    </div>
+                    <div class="meal">
+                        <div class="meal-type">🌙 Dinner</div>
+                        <div>${meals.dinner}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Display AI-generated grocery list
+            const groceryHTML = Object.entries(aiData.groceryList).map(([category, items]) => {
+                const categoryHTML = items.map(item => `
+                    <div class="grocery-item">
+                        <span>${item.name} (${item.quantity} ${item.unit})</span>
+                        <span class="price">₱${item.price}</span>
+                    </div>
+                `).join('');
+                
+                return `
+                    <div class="grocery-category">${category}</div>
+                    ${categoryHTML}
+                `;
+            }).join('');
+
+            const totalCost = aiData.totalCost || 0;
+            const budgetStatus = totalCost <= budget ? 'Within Budget! 🎉' : 'Over Budget ⚠️';
+            const budgetColor = totalCost <= budget ? '#48bb78' : '#e53e3e';
+
+            document.getElementById('mealPlan').innerHTML = `
+                <h3>🍽️ Your AI-Generated Meal Plan</h3>
+                <div style="background: rgba(255, 107, 157, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; color: #ff6b9d;">
+                    ✨ Powered by Vercel AI Gateway - Free during Alpha!
+                </div>
+                ${mealPlanHTML}
+                ${aiData.tips ? `<div style="background: rgba(255, 107, 157, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px; border-left: 4px solid #ff6b9d;"><strong>💡 AI Tips:</strong> ${aiData.tips}</div>` : ''}
+            `;
+
+            document.getElementById('groceryList').innerHTML = `
+                <h3>🛒 AI-Generated Shopping List</h3>
+                ${groceryHTML}
+                <div class="total-budget" style="background: ${budgetColor}">
+                    Total Cost: ₱${totalCost} / ₱${budget}<br>
+                    ${budgetStatus}
+                </div>
+            `;
+
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('generateBtn').disabled = false;
         }
 
         function showLoading() {
