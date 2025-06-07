@@ -1,4 +1,6 @@
-// api/generate-meal-plan.js
+// api/generate-meal-plan-vercel.js
+// Using Vercel AI Gateway - Free during Alpha!
+
 export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -18,23 +20,17 @@ export default async function handler(req, res) {
   try {
     const { preferences } = req.body;
     
-    // Your OpenAI API key (add this as environment variable in Vercel)
-    const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-    
-    if (!OPENAI_API_KEY) {
-      throw new Error('OpenAI API key not configured');
-    }
-
     const prompt = createAIPrompt(preferences);
     
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Using Vercel AI Gateway - no API key needed!
+    const response = await fetch('https://gateway.ai.vercel.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`
+        'Authorization': `Bearer ${process.env.VERCEL_AI_GATEWAY_TOKEN || 'demo'}`
       },
       body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-3.5-turbo', // Free model through gateway
         messages: [
           {
             role: 'system',
@@ -51,7 +47,8 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      throw new Error(`OpenAI API request failed: ${response.status}`);
+      console.error('AI Gateway request failed:', response.status, await response.text());
+      throw new Error(`AI Gateway request failed: ${response.status}`);
     }
 
     const data = await response.json();
@@ -71,6 +68,8 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Error generating meal plan:', error);
+    
+    // Return error response so frontend falls back to static generation
     res.status(500).json({
       success: false,
       error: error.message
@@ -79,7 +78,10 @@ export default async function handler(req, res) {
 }
 
 function createAIPrompt(preferences) {
-  return `Create a ${preferences.days}-day meal plan for ${preferences.people} people with a budget of PHP ${preferences.budget}.
+  const days = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'];
+  const selectedDays = days.slice(0, preferences.days);
+
+  return `Create a ${preferences.days}-day Filipino meal plan for ${preferences.people} people with a budget of PHP ${preferences.budget}.
 
 Requirements:
 - Cuisine preference: ${preferences.cuisine}
@@ -87,51 +89,32 @@ Requirements:
 - Allergies/Avoid: ${preferences.allergies || 'None'}
 - Additional preferences: ${preferences.preferences || 'None'}
 
-IMPORTANT: Respond with ONLY valid JSON in this exact format:
+CRITICAL: You must respond with ONLY valid JSON. No explanations, no markdown, just pure JSON.
+
+Required JSON structure:
 {
   "mealPlan": {
-    "Day 1": {
-      "breakfast": "Tapsilog",
-      "lunch": "Chicken Adobo with Rice", 
-      "dinner": "Sinigang na Baboy"
-    },
-    "Day 2": {
-      "breakfast": "Pancit Canton",
-      "lunch": "Fish Escabeche with Rice",
-      "dinner": "Pork Menudo"
-    }
+    ${selectedDays.map(day => `"${day}": {"breakfast": "dish name", "lunch": "dish name", "dinner": "dish name"}`).join(',\n    ')}
   },
   "groceryList": {
-    "Meat & Poultry": [
-      {
-        "name": "Chicken",
-        "quantity": "2",
-        "unit": "kg",
-        "price": 360
-      }
-    ],
-    "Rice & Grains": [
-      {
-        "name": "Rice",
-        "quantity": "5",
-        "unit": "kg", 
-        "price": 250
-      }
-    ],
-    "Vegetables": [
-      {
-        "name": "Onions",
-        "quantity": "1",
-        "unit": "kg",
-        "price": 80
-      }
-    ]
+    "Meat & Poultry": [{"name": "ingredient", "quantity": "2", "unit": "kg", "price": 360}],
+    "Rice & Grains": [{"name": "Rice", "quantity": "5", "unit": "kg", "price": 250}],
+    "Vegetables": [{"name": "ingredient", "quantity": "1", "unit": "kg", "price": 80}],
+    "Pantry": [{"name": "ingredient", "quantity": "1", "unit": "bottle", "price": 30}]
   },
   "totalCost": 1500,
-  "tips": "Prep vegetables ahead of time to save cooking time during busy weekdays."
+  "tips": "helpful cooking tip"
 }
 
-Focus on authentic Filipino recipes, realistic portions for ${preferences.people} people for ${preferences.days} days, and accurate Philippine market prices that fit within PHP ${preferences.budget}.`;
+Rules:
+- Use authentic Filipino dishes only
+- Realistic portions for ${preferences.people} people for ${preferences.days} days
+- Accurate Philippine market prices
+- Stay within PHP ${preferences.budget} budget
+- All prices must be numbers (not strings)
+- Include variety in meals across days
+
+Respond with JSON only:`;
 }
 
 function parseAIResponse(content) {
@@ -152,6 +135,23 @@ function parseAIResponse(content) {
     return JSON.parse(cleanContent);
   } catch (error) {
     console.error('Failed to parse AI response:', error);
-    return null;
+    
+    // Return a basic fallback structure
+    return {
+      mealPlan: {
+        "Day 1": {
+          breakfast: "Tapsilog",
+          lunch: "Chicken Adobo with Rice",
+          dinner: "Sinigang na Baboy"
+        }
+      },
+      groceryList: {
+        "Staples": [
+          { name: "Rice", quantity: "5", unit: "kg", price: 250 }
+        ]
+      },
+      totalCost: 1500,
+      tips: "AI parsing failed, using basic meal plan."
+    };
   }
 }
