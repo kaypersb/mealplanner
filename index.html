@@ -118,6 +118,102 @@
             border-color: #3498db;
         }
 
+        .dropdown-checkbox {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-toggle:hover {
+            border-color: #3498db;
+        }
+
+        .dropdown-toggle.active {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .dropdown-text {
+            color: #2c3e50;
+            flex: 1;
+        }
+
+        .dropdown-text.placeholder {
+            color: #7f8c8d;
+        }
+
+        .dropdown-arrow {
+            color: #7f8c8d;
+            transition: transform 0.2s ease;
+        }
+
+        .dropdown-toggle.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu .checkbox-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f8f9fa;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-menu .checkbox-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu .checkbox-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .dropdown-menu .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-menu .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            transform: scale(1.1);
+        }
+
+        .dropdown-menu .checkbox-item label {
+            margin-bottom: 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+
         .generate-btn {
             width: 100%;
             padding: 1rem;
@@ -217,8 +313,9 @@
         }
 
         .meals-grid {
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
         }
 
         .meal-card {
@@ -226,8 +323,6 @@
             border-radius: 8px;
             padding: 1.5rem;
             transition: all 0.2s ease;
-            width: 100%;
-            max-width: 400px;
         }
 
         .meal-card:hover {
@@ -294,6 +389,13 @@
             .day-selector {
                 flex-direction: column;
             }
+
+            .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                border: 1px solid #e1e8ed;
+                margin-top: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -318,39 +420,55 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Meals per Day</label>
+                        <div class="day-selector">
+                            <div class="day-option active" data-meals="1">1 Meal</div>
+                            <div class="day-option" data-meals="2">2 Meals</div>
+                            <div class="day-option" data-meals="3">3 Meals</div>
+                        </div>
+                        <input type="hidden" id="mealsPerDay" value="1">
+                    </div>
+
+                    <div class="form-group">
                         <label>Preferred Main Ingredients</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="chicken" value="Chicken">
-                                <label for="chicken">Chicken</label>
+                        <div class="dropdown-checkbox">
+                            <div class="dropdown-toggle" id="ingredientDropdown">
+                                <span class="dropdown-text">Select ingredients...</span>
+                                <span class="dropdown-arrow">▼</span>
                             </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="fish" value="Fish">
-                                <label for="fish">Fish</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="pork" value="Pork">
-                                <label for="pork">Pork</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="beef" value="Beef">
-                                <label for="beef">Beef</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="seafood" value="Seafood">
-                                <label for="seafood">Seafood</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="vegetable" value="Vegetable">
-                                <label for="vegetable">Vegetable</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="rice" value="Rice">
-                                <label for="rice">Rice</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="pasta" value="Pasta">
-                                <label for="pasta">Pasta</label>
+                            <div class="dropdown-menu" id="ingredientDropdownMenu">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="chicken" value="Chicken">
+                                    <label for="chicken">Chicken</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="fish" value="Fish">
+                                    <label for="fish">Fish</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="pork" value="Pork">
+                                    <label for="pork">Pork</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="beef" value="Beef">
+                                    <label for="beef">Beef</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="seafood" value="Seafood">
+                                    <label for="seafood">Seafood</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="vegetable" value="Vegetable">
+                                    <label for="vegetable">Vegetable</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="rice" value="Rice">
+                                    <label for="rice">Rice</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="pasta" value="Pasta">
+                                    <label for="pasta">Pasta</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -435,43 +553,102 @@
                 
                 // Fallback data based on your CSV structure
                 recipesData = [
-                    { recipe_id: 1, recipe_name: "Chicken in Tarragon Marinade",recipe_main_ingredient: "Chicken", recipe_link: "https://www.instagram.com/p/CHWu5B0n4zC/", Cuisine: "Filipino", recipe_image: "", notes: "Inspired by @dietitiansamantha", contributed_by: "Kitchenkaypers", alternatives: "" },
-                    { recipe_id: 2, recipe_name: "Baked Pampano",recipe_main_ingredient: "Fish", recipe_link: "https://www.instagram.com/p/CGwOHnAnCRP/", Cuisine: "Filipino", recipe_image: "", notes: "", contributed_by: "", alternatives: "" },
-                    { recipe_id: 3, recipe_name: "Baked Salmon Fillet in Cream Sauce",recipe_main_ingredient: "Fish", recipe_link: "https://www.yummy.ph/lessons/cooking/how-to-make-baked-salmon-ala-contis-recipe-video-a00249-20201218", Cuisine: "Filipino", recipe_image: "", notes: "", contributed_by: "", alternatives: "" },
-                    { recipe_id: 4, recipe_name: "Chicken Adobo",recipe_main_ingredient: "Chicken", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Classic Filipino dish", contributed_by: "", alternatives: "" },
-                    { recipe_id: 5, recipe_name: "Pork Sisig",recipe_main_ingredient: "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sizzling pork dish", contributed_by: "", alternatives: "" },
-                    { recipe_id: 6, recipe_name: "Beef Caldereta",recipe_main_ingredient: "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Hearty beef stew", contributed_by: "", alternatives: "" },
-                    { recipe_id: 7, recipe_name: "Seafood Pasta",recipe_main_ingredient: "Seafood", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Creamy seafood pasta", contributed_by: "", alternatives: "" },
-                    { recipe_id: 8, recipe_name: "Vegetable Lumpia",recipe_main_ingredient: "Vegetable", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Fresh spring rolls", contributed_by: "", alternatives: "" },
-                    { recipe_id: 9, recipe_name: "Chicken Curry",recipe_main_ingredient: "Chicken", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Coconut curry chicken", contributed_by: "", alternatives: "" },
-                    { recipe_id: 10, recipe_name: "Fish Sinigang",recipe_main_ingredient: "Fish", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sour fish soup", contributed_by: "", alternatives: "" },
-                    { recipe_id: 11, recipe_name: "Pork Menudo",recipe_main_ingredient: "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Tomato-based pork stew", contributed_by: "", alternatives: "" },
-                    { recipe_id: 12, recipe_name: "Beef Kare-kare",recipe_main_ingredient: "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Peanut sauce beef", contributed_by: "", alternatives: "" },
-                    { recipe_id: 13, recipe_name: "Garlic Rice",recipe_main_ingredient: "Rice", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Fragrant garlic fried rice", contributed_by: "", alternatives: "" },
-                    { recipe_id: 14, recipe_name: "Chicken Tinola",recipe_main_ingredient: "Chicken", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Ginger chicken soup", contributed_by: "", alternatives: "" },
-                    { recipe_id: 15, recipe_name: "Pancit Canton",recipe_main_ingredient: "Pasta", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Stir-fried noodles", contributed_by: "", alternatives: "" },
-                    { recipe_id: 16, recipe_name: "Grilled Bangus",recipe_main_ingredient: "Fish", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Grilled milkfish", contributed_by: "", alternatives: "" },
-                    { recipe_id: 17, recipe_name: "Pork Barbecue",recipe_main_ingredient: "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sweet grilled pork", contributed_by: "", alternatives: "" },
-                    { recipe_id: 18, recipe_name: "Vegetable Salad",recipe_main_ingredient: "Vegetable", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Fresh mixed vegetables", contributed_by: "", alternatives: "" },
-                    { recipe_id: 19, recipe_name: "Beef Tapa",recipe_main_ingredient: "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Cured beef strips", contributed_by: "", alternatives: "" },
-                    { recipe_id: 20, recipe_name: "Shrimp Tempura",recipe_main_ingredient: "Seafood", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Crispy fried shrimp", contributed_by: "", alternatives: "" },
-                    { recipe_id: 21, recipe_name: "Pinakbet",recipe_main_ingredient: "Vegetable", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Mixed vegetable stew", contributed_by: "", alternatives: "" },
-                    { recipe_id: 22, recipe_name: "Chicken Inasal",recipe_main_ingredient: "Chicken", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Grilled marinated chicken", contributed_by: "", alternatives: "" },
-                    { recipe_id: 23, recipe_name: "Pork Tocino",recipe_main_ingredient: "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sweet cured pork", contributed_by: "", alternatives: "" },
-                    { recipe_id: 24, recipe_name: "Fish Escabeche",recipe_main_ingredient: "Fish", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sweet and sour fish", contributed_by: "", alternatives: "" },
-                    { recipe_id: 25, recipe_name: "Beef Sinigang",recipe_main_ingredient: "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sour beef soup", contributed_by: "", alternatives: "" }
+                    { recipe_id: 1, recipe_name: "Chicken in Tarragon Marinade", recipe_main_ingredient: "Chicken", recipe_link: "https://www.instagram.com/p/CHWu5B0n4zC/", Cuisine: "Filipino", recipe_image: "", notes: "Inspired by @dietitiansamantha", contributed_by: "Kitchenkaypers", alternatives: "" },
+                    { recipe_id: 2, recipe_name: "Baked Pampano", recipe_main_ingredient: "Fish", recipe_link: "https://www.instagram.com/p/CGwOHnAnCRP/", Cuisine: "Filipino", recipe_image: "", notes: "", contributed_by: "", alternatives: "" },
+                    { recipe_id: 3, recipe_name: "Baked Salmon Fillet in Cream Sauce", recipe_main_ingredient: "Fish", recipe_link: "https://www.yummy.ph/lessons/cooking/how-to-make-baked-salmon-ala-contis-recipe-video-a00249-20201218", Cuisine: "Filipino", recipe_image: "", notes: "", contributed_by: "", alternatives: "" },
+                    { recipe_id: 4, recipe_name: "Chicken Adobo", recipe_main_ingredient: "Chicken", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Classic Filipino dish", contributed_by: "", alternatives: "" },
+                    { recipe_id: 5, recipe_name: "Pork Sisig", recipe_main_ingredient: "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sizzling pork dish", contributed_by: "", alternatives: "" },
+                    { recipe_id: 6, recipe_name: "Beef Caldereta", recipe_main_ingredient: "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Hearty beef stew", contributed_by: "", alternatives: "" },
+                    { recipe_id: 7, recipe_name: "Seafood Pasta", recipe_main_ingredient: "Seafood", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Creamy seafood pasta", contributed_by: "", alternatives: "" },
+                    { recipe_id: 8, recipe_name: "Vegetable Lumpia", recipe_main_ingredient: "Vegetable", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Fresh spring rolls", contributed_by: "", alternatives: "" },
+                    { recipe_id: 9, recipe_name: "Chicken Curry", recipe_main_ingredient: "Chicken", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Coconut curry chicken", contributed_by: "", alternatives: "" },
+                    { recipe_id: 10, recipe_name: "Fish Sinigang", recipe_main_ingredient: "Fish", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sour fish soup", contributed_by: "", alternatives: "" },
+                    { recipe_id: 11, recipe_name: "Pork Menudo", recipe_main_ingredient: "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Tomato-based pork stew", contributed_by: "", alternatives: "" },
+                    { recipe_id: 12, recipe_name: "Beef Kare-kare", recipe_main_ingredient: "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Peanut sauce beef", contributed_by: "", alternatives: "" },
+                    { recipe_id: 13, recipe_name: "Garlic Rice", recipe_main_ingredient: "Rice", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Fragrant garlic fried rice", contributed_by: "", alternatives: "" },
+                    { recipe_id: 14, recipe_name: "Chicken Tinola", recipe_main_ingredient: "Chicken", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Ginger chicken soup", contributed_by: "", alternatives: "" },
+                    { recipe_id: 15, recipe_name: "Pancit Canton", recipe_main_ingredient: "Pasta", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Stir-fried noodles", contributed_by: "", alternatives: "" },
+                    { recipe_id: 16, recipe_name: "Grilled Bangus", recipe_main_ingredient: "Fish", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Grilled milkfish", contributed_by: "", alternatives: "" },
+                    { recipe_id: 17, recipe_name: "Pork Barbecue", recipe_main_ingredient: "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sweet grilled pork", contributed_by: "", alternatives: "" },
+                    { recipe_id: 18, recipe_name: "Vegetable Salad", recipe_main_ingredient: "Vegetable", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Fresh mixed vegetables", contributed_by: "", alternatives: "" },
+                    { recipe_id: 19, recipe_name: "Beef Tapa", recipe_main_ingredient: "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Cured beef strips", contributed_by: "", alternatives: "" },
+                    { recipe_id: 20, recipe_name: "Shrimp Tempura", recipe_main_ingredient: "Seafood", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Crispy fried shrimp", contributed_by: "", alternatives: "" },
+                    { recipe_id: 21, recipe_name: "Pinakbet", recipe_main_ingredient: "Vegetable", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Mixed vegetable stew", contributed_by: "", alternatives: "" },
+                    { recipe_id: 22, recipe_name: "Chicken Inasal", recipe_main_ingredient: "Chicken", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Grilled marinated chicken", contributed_by: "", alternatives: "" },
+                    { recipe_id: 23, recipe_name: "Pork Tocino", recipe_main_ingredient: "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sweet cured pork", contributed_by: "", alternatives: "" },
+                    { recipe_id: 24, recipe_name: "Fish Escabeche", recipe_main_ingredient: "Fish", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sweet and sour fish", contributed_by: "", alternatives: "" },
+                    { recipe_id: 25, recipe_name: "Beef Sinigang", recipe_main_ingredient: "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sour beef soup", contributed_by: "", alternatives: "" }
                 ];
                 
                 return false;
             }
         }
 
+        // Dropdown checkbox functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggle = document.getElementById('ingredientDropdown');
+            const dropdownMenu = document.getElementById('ingredientDropdownMenu');
+            const dropdownText = dropdownToggle.querySelector('.dropdown-text');
+            const checkboxes = dropdownMenu.querySelectorAll('input[type="checkbox"]');
+
+            // Toggle dropdown
+            dropdownToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownToggle.classList.toggle('active');
+                dropdownMenu.classList.toggle('show');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownToggle.classList.remove('active');
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+
+            // Update dropdown text when checkboxes change
+            function updateDropdownText() {
+                const selectedOptions = Array.from(checkboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.nextElementSibling.textContent);
+
+                if (selectedOptions.length === 0) {
+                    dropdownText.textContent = 'Select ingredients...';
+                    dropdownText.classList.add('placeholder');
+                } else if (selectedOptions.length === 1) {
+                    dropdownText.textContent = selectedOptions[0];
+                    dropdownText.classList.remove('placeholder');
+                } else {
+                    dropdownText.textContent = `${selectedOptions.length} ingredients selected`;
+                    dropdownText.classList.remove('placeholder');
+                }
+            }
+
+            // Add event listeners to checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateDropdownText);
+            });
+
+            // Prevent dropdown from closing when clicking inside menu
+            dropdownMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
         // Day selector functionality
         document.querySelectorAll('.day-option').forEach(option => {
             option.addEventListener('click', function() {
-                document.querySelectorAll('.day-option').forEach(opt => opt.classList.remove('active'));
+                // Find the parent group and only affect siblings within that group
+                const parentGroup = this.parentElement;
+                parentGroup.querySelectorAll('.day-option').forEach(opt => opt.classList.remove('active'));
                 this.classList.add('active');
-                document.getElementById('days').value = this.dataset.days;
+                
+                // Update the appropriate hidden input based on data attribute
+                if (this.dataset.days) {
+                    document.getElementById('days').value = this.dataset.days;
+                } else if (this.dataset.meals) {
+                    document.getElementById('mealsPerDay').value = this.dataset.meals;
+                }
             });
         });
 
@@ -489,7 +666,7 @@
 
         function generateMealPlan() {
             const days = parseInt(document.getElementById('days').value);
-            //const mainIngredient = document.getElementById('mainIngredient').value;
+            const mealsPerDay = parseInt(document.getElementById('mealsPerDay').value);
             const cuisine = document.getElementById('cuisine').value;
 
             const selectedIngredients = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
@@ -497,8 +674,8 @@
             showLoading();
 
             setTimeout(() => {
-                const mealPlan = createMealPlan(days, selectedIngredients, cuisine);
-                displayMealPlan(mealPlan, days);
+                const mealPlan = createMealPlan(days, mealsPerDay, selectedIngredients, cuisine);
+                displayMealPlan(mealPlan, days, mealsPerDay);
             }, 1500);
         }
 
@@ -511,16 +688,15 @@
             `;
         }
 
-        function createMealPlan(days, selectedIngredients, cuisine) {
+        function createMealPlan(days, mealsPerDay, selectedIngredients, cuisine) {
             const plan = {};
             const usedRecipeIds = new Set(); // Track used recipe IDs to prevent exact repeats
+            const mealTypes = ['Meal 1', 'Meal 2', 'Meal 3'];
             
             // Filter recipes based on preferences
             let filteredRecipes = recipesData.filter(recipe => {
-                // Debug: log what we're working with
-
                 // If ingredients are selected, recipe must match one of them
-                 console.log("selectedIngredients is", selectedIngredients, selectedIngredients.length);
+                console.log("selectedIngredients is", selectedIngredients, selectedIngredients.length);
                 if (selectedIngredients.length > 0) {
                     // Clean the recipe ingredient (trim spaces and normalize)
                     const recipeIngredient = (recipe.recipe_main_ingredient);
@@ -530,19 +706,15 @@
                         selectedIng.toLowerCase() === recipeIngredient.toLowerCase()
                     );
                     
-                    
                     if (!matches) {
-                      //  console.log("❌ Recipe filtered out - ingredient mismatch");
                         return false;
                     }
                 }
                 
                 if (cuisine && recipe.Cuisine !== cuisine) {
-                 //   console.log("❌ Recipe filtered out - cuisine mismatch");
                     return false;
                 }
                 
-               // console.log("✅ Recipe included:", recipe.recipe_name);
                 return true;
             });
 
@@ -556,53 +728,67 @@
 
             for (let i = 0; i < days; i++) {
                 const dayKey = `Day ${i + 1}`;
+                plan[dayKey] = {};
                 
-                // Find a recipe that hasn't been used yet
-                let selectedRecipe = null;
-                
-                // First, try to find an unused recipe
-                for (const recipe of shuffledRecipes) {
-                    const recipeId = recipe.recipe_id || recipe.recipe_name;
-                    if (!usedRecipeIds.has(recipeId)) {
-                        selectedRecipe = recipe;
-                        usedRecipeIds.add(recipeId);
-                        break;
+                // Generate meals based on mealsPerDay setting
+                for (let mealIndex = 0; mealIndex < mealsPerDay; mealIndex++) {
+                    const mealType = mealTypes[mealIndex]; // Use predefined meal types
+                    
+                    // Find a recipe that hasn't been used yet
+                    let selectedRecipe = null;
+                    
+                    // First, try to find an unused recipe
+                    for (const recipe of shuffledRecipes) {
+                        const recipeId = recipe.recipe_id || recipe.recipe_name;
+                        if (!usedRecipeIds.has(recipeId)) {
+                            selectedRecipe = recipe;
+                            usedRecipeIds.add(recipeId);
+                            break;
+                        }
                     }
+                    
+                    // If all recipes have been used and we need more meals, 
+                    // clear the used set and start over
+                    if (!selectedRecipe && usedRecipeIds.size >= filteredRecipes.length) {
+                        usedRecipeIds.clear();
+                        selectedRecipe = shuffledRecipes[0];
+                        usedRecipeIds.add(selectedRecipe.recipe_id || selectedRecipe.recipe_name);
+                    }
+                    
+                    // Absolute fallback - should never happen
+                    if (!selectedRecipe) {
+                        selectedRecipe = shuffledRecipes[Math.floor(Math.random() * shuffledRecipes.length)];
+                    }
+                    
+                    plan[dayKey][mealType] = selectedRecipe;
                 }
-                
-                // If all recipes have been used and we need more days, 
-                // clear the used set and start over
-                if (!selectedRecipe && usedRecipeIds.size >= filteredRecipes.length) {
-                    usedRecipeIds.clear();
-                    selectedRecipe = shuffledRecipes[0];
-                    usedRecipeIds.add(selectedRecipe.recipe_id || selectedRecipe.recipe_name);
-                }
-                
-                // Absolute fallback - should never happen
-                if (!selectedRecipe) {
-                    selectedRecipe = shuffledRecipes[Math.floor(Math.random() * shuffledRecipes.length)];
-                }
-                
-                plan[dayKey] = selectedRecipe;
             }
 
             return plan;
         }
 
-        function displayMealPlan(mealPlan, days) {
+        function displayMealPlan(mealPlan, days, mealsPerDay) {
             // Calculate variety metrics
-            const allMeals = Object.values(mealPlan).map(recipe => recipe.recipe_name);
+            const allMeals = [];
+            Object.values(mealPlan).forEach(day => {
+                Object.values(day).forEach(recipe => {
+                    allMeals.push(recipe.recipe_name);
+                });
+            });
+            
             const uniqueMeals = new Set(allMeals);
             const varietyPercentage = Math.round((uniqueMeals.size / allMeals.length) * 100);
+            const totalMeals = days * mealsPerDay;
             
             let html = `
                 <div class="meal-plan">
                     <div class="plan-header">
                         <div class="plan-title">${days}-Day Meal Plan</div>
+                        <div class="plan-subtitle">${totalMeals} total meals (${mealsPerDay} meal${mealsPerDay > 1 ? 's' : ''} per day)</div>
                     </div>
                     
                     <div class="variety-info">
-                        📊 <strong>Meal Variety:</strong> ${uniqueMeals.size} unique recipes out of ${allMeals.length} total meals (${varietyPercentage}% variety)
+                        📊 <strong>Meal Variety:</strong> ${uniqueMeals.size} unique recipes out of ${totalMeals} total meals (${varietyPercentage}% variety)
                         ${varietyPercentage === 100 ? ' - Perfect variety! No repeats! 🌟' : 
                           varietyPercentage >= 80 ? ' - Excellent variety! 🌟' : 
                           varietyPercentage >= 60 ? ' - Good variety! 👍' : 
@@ -610,18 +796,28 @@
                     </div>
             `;
 
-            Object.entries(mealPlan).forEach(([day, recipe]) => {
+            Object.entries(mealPlan).forEach(([day, meals]) => {
                 html += `
                     <div class="day-section">
                         <div class="day-header">${day}</div>
                         <div class="meals-grid">
-                            <div class="meal-card">
-                                <div class="meal-name">${recipe.recipe_name}</div>
-                                <div class="meal-ingredient">Main: ${recipe.recipe_main_ingredient}</div>
-                                ${recipe.notes ? `<div class="meal-ingredient">Notes: ${recipe.notes}</div>` : ''}
-                                ${recipe.recipe_link && recipe.recipe_link !== '#' ? 
-                                    `<a href="${recipe.recipe_link}" target="_blank" class="meal-link">View Recipe →</a>` : ''}
-                            </div>
+                `;
+
+                // Display meals based on how many are planned for the day
+                Object.entries(meals).forEach(([mealType, recipe]) => {
+                    html += `
+                        <div class="meal-card">
+                            <div class="meal-type">${mealType}</div>
+                            <div class="meal-name">${recipe.recipe_name}</div>
+                            <div class="meal-ingredient">Main: ${recipe.recipe_main_ingredient}</div>
+                            ${recipe.notes ? `<div class="meal-ingredient">Notes: ${recipe.notes}</div>` : ''}
+                            ${recipe.recipe_link && recipe.recipe_link !== '#' ? 
+                                `<a href="${recipe.recipe_link}" target="_blank" class="meal-link">View Recipe →</a>` : ''}
+                        </div>
+                    `;
+                });
+
+                html += `
                         </div>
                     </div>
                 `;
