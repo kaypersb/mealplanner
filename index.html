@@ -517,7 +517,6 @@
             const plan = {};
             const usedRecipeIds = new Set(); // Track used recipe IDs to prevent exact repeats
 
-
             // Filter recipes based on preferences
             let filteredRecipes = recipesData.filter(recipe => {
                 // Debug: log what we're working with
@@ -549,13 +548,7 @@
                 
                 console.log("✅ Recipe included:", recipe.recipe_name);
                 return true;
-                
-
-            console.log("Filtered Recipe", filteredRecipes, selectedIngredients.length)
-            // If no recipes match criteria, use all recipes
-            if (filteredRecipes.length === 0) {
-                filteredRecipes = recipesData;
-            }
+            });
 
             // If no recipes match criteria, use all recipes
             if (filteredRecipes.length === 0) {
