@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Meal Planner PH</title>
+    <title>Minimalist Meal Planner</title>
     <style>
         * {
             margin: 0;
@@ -12,147 +12,168 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-            min-height: 100vh;
-            color: #e2e8f0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fafafa;
+            color: #2c3e50;
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 2rem;
         }
 
         .header {
             text-align: center;
-            color: white;
-            margin-bottom: 40px;
-            padding: 20px 0;
+            margin-bottom: 3rem;
         }
 
         .header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            background: linear-gradient(135deg, #ff6b9d, #ffa8c5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
         }
 
         .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            font-weight: 300;
         }
 
-        .main-content {
+        .main-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
+            grid-template-columns: 350px 1fr;
+            gap: 3rem;
+            align-items: start;
         }
 
-        .form-section, .results-section {
-            background: rgba(45, 55, 72, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .form-section h2, .results-section h2 {
-            color: #ff6b9d;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+        .form-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 2rem;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #e2e8f0;
+            font-weight: 500;
+            color: #34495e;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
         }
 
-        input, select, textarea {
+        input, select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #4a5568;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: #2d3748;
-            color: #e2e8f0;
+            padding: 0.75rem;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: white;
         }
 
-        input:focus, select:focus, textarea:focus {
+        input:focus, select:focus {
             outline: none;
-            border-color: #ff6b9d;
-            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.2);
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
 
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .checkbox-item {
+        .day-selector {
             display: flex;
-            align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
         }
 
-        .checkbox-item input[type="checkbox"] {
-            width: auto;
-            margin: 0;
+        .day-option {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #e1e8ed;
+            background: white;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .day-option:hover {
+            border-color: #3498db;
+        }
+
+        .day-option.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
         }
 
         .generate-btn {
-            background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+            width: 100%;
+            padding: 1rem;
+            background: #2c3e50;
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: 600;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 20px;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
         }
 
         .generate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 107, 157, 0.4);
+            background: #34495e;
         }
 
         .generate-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none;
+        }
+
+        .results-panel {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #7f8c8d;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
         }
 
         .loading {
-            display: none;
             text-align: center;
-            padding: 40px;
+            color: #7f8c8d;
         }
 
         .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #e2e8f0;
-            border-top: 4px solid #667eea;
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 1rem;
         }
 
         @keyframes spin {
@@ -160,86 +181,106 @@
             100% { transform: rotate(360deg); }
         }
 
-        .meal-plan, .grocery-list {
-            margin-bottom: 30px;
+        .meal-plan {
+            padding: 2rem;
         }
 
-        .day-card {
-            background: #f7fafc;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 5px solid #667eea;
+        .plan-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #ecf0f1;
         }
 
-        .day-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 15px;
+        .plan-title {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
         }
 
-        .meal {
-            margin-bottom: 10px;
-            padding: 10px;
-            background: white;
+        .plan-subtitle {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .day-section {
+            margin-bottom: 2rem;
+        }
+
+        .day-header {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .meals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .meal-card {
+            border: 1px solid #ecf0f1;
             border-radius: 8px;
-            border: 1px solid #e2e8f0;
+            padding: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .meal-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .meal-type {
-            font-weight: 600;
-            color: #667eea;
-            margin-bottom: 5px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
         }
 
-        .grocery-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: white;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            border: 1px solid #e2e8f0;
+        .meal-name {
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
         }
 
-        .grocery-category {
-            background: #667eea;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-weight: 600;
-            margin: 20px 0 10px 0;
+        .meal-ingredient {
+            font-size: 0.85rem;
+            color: #7f8c8d;
         }
 
-        .price {
-            color: #e53e3e;
-            font-weight: 600;
+        .meal-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.85rem;
         }
 
-        .total-budget {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-top: 20px;
+        .meal-link:hover {
+            text-decoration: underline;
         }
 
         @media (max-width: 768px) {
-            .main-content {
+            .main-grid {
                 grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .form-panel {
+                position: static;
             }
             
             .header h1 {
                 font-size: 2rem;
             }
             
-            .checkbox-group {
-                grid-template-columns: 1fr;
+            .day-selector {
+                flex-direction: column;
             }
         }
     </style>
@@ -247,678 +288,278 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🍽️ AI Meal Planner PH</h1>
-            <p>Smart meal planning with Filipino ingredients and budget-friendly options</p>
+            <h1>Meal Planner</h1>
+            <p>Simple meal planning with real recipes</p>
         </div>
 
-        <div class="main-content">
-            <div class="form-section">
-                <h2>📝 Tell us about your preferences</h2>
+        <div class="main-grid">
+            <div class="form-panel">
                 <form id="mealPlanForm">
                     <div class="form-group">
-                        <label for="people">Number of people:</label>
-                        <input type="number" id="people" min="1" max="10" value="2" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="days">Days to plan:</label>
-                        <select id="days" required>
-                            <option value="3">3 days</option>
-                            <option value="5">5 days</option>
-                            <option value="7" selected>1 week</option>
-                            <option value="14">2 weeks</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="budget">Weekly budget (PHP):</label>
-                        <input type="number" id="budget" min="500" max="10000" value="2000" step="100" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cuisine">Preferred cuisine:</label>
-                        <select id="cuisine">
-                            <option value="filipino">Filipino</option>
-                            <option value="asian">Asian Fusion</option>
-                            <option value="western">Western</option>
-                            <option value="mixed" selected>Mixed</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Dietary restrictions:</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="vegetarian" value="vegetarian">
-                                <label for="vegetarian">Vegetarian</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="vegan" value="vegan">
-                                <label for="vegan">Vegan</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="halal" value="halal">
-                                <label for="halal">Halal</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="no-pork" value="no-pork">
-                                <label for="no-pork">No Pork</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="no-seafood" value="no-seafood">
-                                <label for="no-seafood">No Seafood</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="diabetic" value="diabetic">
-                                <label for="diabetic">Diabetic-friendly</label>
-                            </div>
+                        <label>Planning Duration</label>
+                        <div class="day-selector">
+                            <div class="day-option" data-days="3">3 Days</div>
+                            <div class="day-option active" data-days="5">5 Days</div>
+                            <div class="day-option" data-days="7">7 Days</div>
                         </div>
+                        <input type="hidden" id="days" value="5">
                     </div>
 
                     <div class="form-group">
-                        <label for="allergies">Allergies or foods to avoid:</label>
-                        <textarea id="allergies" rows="3" placeholder="e.g., nuts, shellfish, dairy..."></textarea>
+                        <label for="people">Number of People</label>
+                        <select id="people">
+                            <option value="1">1 person</option>
+                            <option value="2" selected>2 people</option>
+                            <option value="3">3 people</option>
+                            <option value="4">4 people</option>
+                            <option value="5">5 people</option>
+                            <option value="6">6+ people</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="preferences">Additional preferences:</label>
-                        <textarea id="preferences" rows="3" placeholder="e.g., prefer chicken, love spicy food, quick meals..."></textarea>
+                        <label for="mainIngredient">Preferred Main Ingredient</label>
+                        <select id="mainIngredient">
+                            <option value="">Any ingredient</option>
+                            <option value="Chicken">Chicken</option>
+                            <option value="Fish">Fish</option>
+                            <option value="Pork">Pork</option>
+                            <option value="Beef">Beef</option>
+                            <option value="Seafood">Seafood</option>
+                            <option value="Vegetable">Vegetable</option>
+                            <option value="Rice">Rice</option>
+                            <option value="Pasta">Pasta</option>
+                        </select>
                     </div>
 
-                    <button type="submit" class="generate-btn" id="generateBtn">
-                        🤖 Generate My Meal Plan
-                    </button>
+                    <div class="form-group">
+                        <label for="cuisine">Cuisine Type</label>
+                        <select id="cuisine">
+                            <option value="">Any cuisine</option>
+                            <option value="Filipino">Filipino</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="generate-btn">Generate Meal Plan</button>
                 </form>
             </div>
 
-            <div class="results-section">
-                <h2>📋 Your AI-Generated Plan</h2>
-                <div id="loadingState" class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>AI is creating your personalized meal plan...</p>
-                </div>
-                
-                <div id="results" style="display: none;">
-                    <div class="meal-plan" id="mealPlan"></div>
-                    <div class="grocery-list" id="groceryList"></div>
+            <div class="results-panel" id="resultsPanel">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🍽️</div>
+                    <h3>Ready to plan your meals?</h3>
+                    <p>Select your preferences and click "Generate Meal Plan" to get started.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Filipino dishes database with estimated prices
-        const filipinoDishes = {
-            breakfast: [
-                { name: "Tapsilog", ingredients: ["beef tapa", "rice", "eggs", "onions"], price: 180 },
-                { name: "Bangsilog", ingredients: ["bangus", "rice", "eggs", "tomatoes"], price: 160 },
-                { name: "Champorado", ingredients: ["sticky rice", "cocoa powder", "milk", "sugar"], price: 80 },
-                { name: "Pancit Canton", ingredients: ["canton noodles", "vegetables", "soy sauce", "meat"], price: 120 },
-                { name: "Arroz Caldo", ingredients: ["rice", "chicken", "ginger", "onions", "garlic"], price: 100 }
-            ],
-            lunch: [
-                { name: "Adobo Chicken", ingredients: ["chicken", "soy sauce", "vinegar", "garlic", "bay leaves", "rice"], price: 200 },
-                { name: "Sinigang na Baboy", ingredients: ["pork", "tamarind", "vegetables", "tomatoes", "onions", "rice"], price: 250 },
-                { name: "Chicken Curry", ingredients: ["chicken", "curry powder", "coconut milk", "potatoes", "rice"], price: 220 },
-                { name: "Beef Caldereta", ingredients: ["beef", "tomato sauce", "potatoes", "carrots", "bell peppers", "rice"], price: 280 },
-                { name: "Fish Escabeche", ingredients: ["fish", "vegetables", "sweet and sour sauce", "rice"], price: 200 }
-            ],
-            dinner: [
-                { name: "Pork Menudo", ingredients: ["pork", "liver", "tomato sauce", "potatoes", "carrots", "rice"], price: 250 },
-                { name: "Chicken Afritada", ingredients: ["chicken", "tomato sauce", "potatoes", "carrots", "rice"], price: 230 },
-                { name: "Bicol Express", ingredients: ["pork", "coconut milk", "chili peppers", "shrimp paste", "rice"], price: 240 },
-                { name: "Kare-kare", ingredients: ["oxtail", "peanut sauce", "vegetables", "bagoong", "rice"], price: 300 },
-                { name: "Ginisang Monggo", ingredients: ["mung beans", "pork", "vegetables", "rice"], price: 150 }
-            ]
-        };
+        let recipesData = [];
+        
+        // Load CSV data from file
+        async function loadRecipes() {
+            try {
+                console.log('Loading recipes from CSV...');
+                const response = await fetch('main/input/MealsToday - recipe_main.csv');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const csvContent = await response.text();
+                console.log('CSV loaded successfully');
+                
+                // Parse CSV content
+                const lines = csvContent.split('\n');
+                const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+                
+                recipesData = lines.slice(1)
+                    .filter(line => line.trim())
+                    .map(line => {
+                        // Handle CSV parsing with potential commas in quoted fields
+                        const values = [];
+                        let current = '';
+                        let inQuotes = false;
+                        
+                        for (let i = 0; i < line.length; i++) {
+                            const char = line[i];
+                            if (char === '"') {
+                                inQuotes = !inQuotes;
+                            } else if (char === ',' && !inQuotes) {
+                                values.push(current.trim());
+                                current = '';
+                            } else {
+                                current += char;
+                            }
+                        }
+                        values.push(current.trim()); // Add the last value
+                        
+                        const recipe = {};
+                        headers.forEach((header, index) => {
+                            recipe[header] = values[index] ? values[index].replace(/"/g, '') : '';
+                        });
+                        return recipe;
+                    })
+                    .filter(recipe => recipe.recipe_name && recipe.recipe_name.trim());
+                
+                console.log(`Successfully loaded ${recipesData.length} recipes`);
+                return true;
+                
+            } catch (error) {
+                console.error('Error loading recipes from CSV:', error);
+                console.log('Using fallback recipe data');
+                
+                // Fallback data based on your CSV structure
+                recipesData = [
+                    { recipe_id: 1, recipe_name: "Chicken in Tarragon Marinade", "  Main Ingredient": "Chicken", recipe_link: "https://www.instagram.com/p/CHWu5B0n4zC/", Cuisine: "Filipino", recipe_image: "", notes: "Inspired by @dietitiansamantha", contributed_by: "Kitchenkaypers", alternatives: "" },
+                    { recipe_id: 2, recipe_name: "Baked Pampano", "  Main Ingredient": "Fish", recipe_link: "https://www.instagram.com/p/CGwOHnAnCRP/", Cuisine: "Filipino", recipe_image: "", notes: "", contributed_by: "", alternatives: "" },
+                    { recipe_id: 3, recipe_name: "Baked Salmon Fillet in Cream Sauce", "  Main Ingredient": "Fish", recipe_link: "https://www.yummy.ph/lessons/cooking/how-to-make-baked-salmon-ala-contis-recipe-video-a00249-20201218", Cuisine: "Filipino", recipe_image: "", notes: "", contributed_by: "", alternatives: "" },
+                    { recipe_id: 4, recipe_name: "Chicken Adobo", "  Main Ingredient": "Chicken", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Classic Filipino dish", contributed_by: "", alternatives: "" },
+                    { recipe_id: 5, recipe_name: "Pork Sisig", "  Main Ingredient": "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sizzling pork dish", contributed_by: "", alternatives: "" },
+                    { recipe_id: 6, recipe_name: "Beef Caldereta", "  Main Ingredient": "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Hearty beef stew", contributed_by: "", alternatives: "" },
+                    { recipe_id: 7, recipe_name: "Seafood Pasta", "  Main Ingredient": "Seafood", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Creamy seafood pasta", contributed_by: "", alternatives: "" },
+                    { recipe_id: 8, recipe_name: "Vegetable Lumpia", "  Main Ingredient": "Vegetable", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Fresh spring rolls", contributed_by: "", alternatives: "" },
+                    { recipe_id: 9, recipe_name: "Chicken Curry", "  Main Ingredient": "Chicken", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Coconut curry chicken", contributed_by: "", alternatives: "" },
+                    { recipe_id: 10, recipe_name: "Fish Sinigang", "  Main Ingredient": "Fish", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sour fish soup", contributed_by: "", alternatives: "" },
+                    { recipe_id: 11, recipe_name: "Pork Menudo", "  Main Ingredient": "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Tomato-based pork stew", contributed_by: "", alternatives: "" },
+                    { recipe_id: 12, recipe_name: "Beef Kare-kare", "  Main Ingredient": "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Peanut sauce beef", contributed_by: "", alternatives: "" },
+                    { recipe_id: 13, recipe_name: "Garlic Rice", "  Main Ingredient": "Rice", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Fragrant garlic fried rice", contributed_by: "", alternatives: "" },
+                    { recipe_id: 14, recipe_name: "Chicken Tinola", "  Main Ingredient": "Chicken", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Ginger chicken soup", contributed_by: "", alternatives: "" },
+                    { recipe_id: 15, recipe_name: "Pancit Canton", "  Main Ingredient": "Pasta", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Stir-fried noodles", contributed_by: "", alternatives: "" },
+                    { recipe_id: 16, recipe_name: "Grilled Bangus", "  Main Ingredient": "Fish", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Grilled milkfish", contributed_by: "", alternatives: "" },
+                    { recipe_id: 17, recipe_name: "Pork Barbecue", "  Main Ingredient": "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sweet grilled pork", contributed_by: "", alternatives: "" },
+                    { recipe_id: 18, recipe_name: "Vegetable Salad", "  Main Ingredient": "Vegetable", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Fresh mixed vegetables", contributed_by: "", alternatives: "" },
+                    { recipe_id: 19, recipe_name: "Beef Tapa", "  Main Ingredient": "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Cured beef strips", contributed_by: "", alternatives: "" },
+                    { recipe_id: 20, recipe_name: "Shrimp Tempura", "  Main Ingredient": "Seafood", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Crispy fried shrimp", contributed_by: "", alternatives: "" }
+                ];
+                
+                return false;
+            }
+        }
 
-        // Grocery items with Philippine prices (PHP)
-        const groceryPrices = {
-            "rice": { price: 50, unit: "kg", category: "Staples" },
-            "chicken": { price: 180, unit: "kg", category: "Meat" },
-            "pork": { price: 250, unit: "kg", category: "Meat" },
-            "beef": { price: 400, unit: "kg", category: "Meat" },
-            "fish": { price: 200, unit: "kg", category: "Seafood" },
-            "eggs": { price: 120, unit: "dozen", category: "Dairy" },
-            "onions": { price: 80, unit: "kg", category: "Vegetables" },
-            "garlic": { price: 200, unit: "kg", category: "Vegetables" },
-            "tomatoes": { price: 100, unit: "kg", category: "Vegetables" },
-            "potatoes": { price: 80, unit: "kg", category: "Vegetables" },
-            "carrots": { price: 120, unit: "kg", category: "Vegetables" },
-            "bell peppers": { price: 150, unit: "kg", category: "Vegetables" },
-            "coconut milk": { price: 25, unit: "can", category: "Pantry" },
-            "soy sauce": { price: 30, unit: "bottle", category: "Condiments" },
-            "vinegar": { price: 20, unit: "bottle", category: "Condiments" },
-            "cooking oil": { price: 80, unit: "bottle", category: "Pantry" },
-            "salt": { price: 15, unit: "pack", category: "Condiments" },
-            "sugar": { price: 60, unit: "kg", category: "Pantry" },
-            "milk": { price: 80, unit: "liter", category: "Dairy" }
-        };
+        // Day selector functionality
+        document.querySelectorAll('.day-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.day-option').forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('days').value = this.dataset.days;
+            });
+        });
 
-        document.getElementById('mealPlanForm').addEventListener('submit', function(e) {
+        // Form submission
+        document.getElementById('mealPlanForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            // Load recipes if not already loaded
+            if (recipesData.length === 0) {
+                await loadRecipes();
+            }
+            
             generateMealPlan();
         });
 
-        async function generateMealPlan() {
-            const formData = new FormData(document.getElementById('mealPlanForm'));
-            const preferences = {
-                people: parseInt(formData.get('people')) || 2,
-                days: parseInt(formData.get('days')) || 7,
-                budget: parseInt(formData.get('budget')) || 2000,
-                cuisine: formData.get('cuisine') || 'mixed',
-                restrictions: Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value),
-                allergies: formData.get('allergies') || '',
-                preferences: formData.get('preferences') || ''
-            };
+        function generateMealPlan() {
+            const days = parseInt(document.getElementById('days').value);
+            const people = parseInt(document.getElementById('people').value);
+            const mainIngredient = document.getElementById('mainIngredient').value;
+            const cuisine = document.getElementById('cuisine').value;
 
             showLoading();
-            
-            try {
-                // Use your custom recipe database directly (no AI calls)
-                console.log('🍽️ Generating meal plan from your custom recipe collection...');
-                const customResponse = generateEnhancedPlan(preferences);
-                displayAIResults(customResponse, preferences.budget);
-                return;
-            } catch (error) {
-                console.error('🔄 Recipe generation failed, using basic fallback:', error);
-            }
-            
-            // Fallback to static generation
-            console.log('Using fallback static generation');
-            const mealPlan = createMealPlan(preferences);
-            const groceryList = createGroceryList(mealPlan, preferences);
-            displayResults(mealPlan, groceryList, preferences.budget);
-        }
 
-        async function generateWithVercelAI(preferences) {
-            try {
-                console.log('🤖 Calling real AI to generate personalized meal plan...');
-                
-                const response = await fetch('/api/ai-meal-planner', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ preferences })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`AI API request failed: ${response.status}`);
-                }
-
-                const result = await response.json();
-                
-                if (result.success && result.data) {
-                    console.log('✅ AI generated creative meal plan successfully!');
-                    return { success: true, data: result.data };
-                } else {
-                    throw new Error(result.error || 'AI generation failed');
-                }
-                
-            } catch (error) {
-                console.error('🔄 AI failed, using smart fallback:', error);
-                // Use enhanced smart generation as fallback
-                const smartResponse = generateEnhancedPlan(preferences);
-                return { success: true, data: smartResponse };
-            }
-        }
-
-        function calculateTotal(groceryList) {
-            let total = 0;
-            Object.values(groceryList).forEach(category => {
-                category.forEach(item => total += item.price);
-            });
-            return total;
-        }
-
-        function parseSimpleAI(text) {
-            // Try to extract meal suggestions from AI text
-            try {
-                const jsonMatch = text.match(/\{[\s\S]*\}/);
-                if (jsonMatch) {
-                    return JSON.parse(jsonMatch[0]);
-                }
-                return null;
-            } catch {
-                return null;
-            }
-        }
-
-        function generateEnhancedPlan(preferences) {
-            const { people, days, budget, restrictions, allergies, preferences: userPrefs } = preferences;
-            
-            // Enhanced Filipino dishes database
-            const filipinoDishes = {
-                breakfast: [
-                    { name: "Tapsilog", vegetarian: false, pork: true, seafood: false, spicy: false },
-                    { name: "Bangsilog", vegetarian: false, pork: false, seafood: true, spicy: false },
-                    { name: "Champorado", vegetarian: true, pork: false, seafood: false, spicy: false },
-                    { name: "Pancit Canton", vegetarian: false, pork: false, seafood: false, spicy: false },
-                    { name: "Arroz Caldo", vegetarian: false, pork: false, seafood: false, spicy: false },
-                    { name: "Longsilog", vegetarian: false, pork: true, seafood: false, spicy: false },
-                    { name: "Tocilog", vegetarian: false, pork: true, seafood: false, spicy: false },
-                    { name: "Hotsilog", vegetarian: false, pork: false, seafood: false, spicy: false }
-                ],
-                lunch: [
-                    { name: "Chicken Adobo with Rice", vegetarian: false, pork: false, seafood: false, spicy: false },
-                    { name: "Sinigang na Baboy", vegetarian: false, pork: true, seafood: false, spicy: false },
-                    { name: "Chicken Tinola", vegetarian: false, pork: false, seafood: false, spicy: false },
-                    { name: "Fish Escabeche with Rice", vegetarian: false, pork: false, seafood: true, spicy: false },
-                    { name: "Beef Caldereta", vegetarian: false, pork: false, seafood: false, spicy: true },
-                    { name: "Vegetable Lumpia with Rice", vegetarian: true, pork: false, seafood: false, spicy: false },
-                    { name: "Ginisang Monggo", vegetarian: false, pork: false, seafood: false, spicy: false },
-                    { name: "Chicken Curry", vegetarian: false, pork: false, seafood: false, spicy: true }
-                ],
-                dinner: [
-                    { name: "Pork Menudo", vegetarian: false, pork: true, seafood: false, spicy: false },
-                    { name: "Chicken Afritada", vegetarian: false, pork: false, seafood: false, spicy: false },
-                    { name: "Bicol Express", vegetarian: false, pork: true, seafood: false, spicy: true },
-                    { name: "Sweet and Sour Fish", vegetarian: false, pork: false, seafood: true, spicy: false },
-                    { name: "Beef Mechado", vegetarian: false, pork: false, seafood: false, spicy: false },
-                    { name: "Pinakbet", vegetarian: true, pork: false, seafood: false, spicy: false },
-                    { name: "Chicken Pastel", vegetarian: false, pork: false, seafood: false, spicy: false },
-                    { name: "Lumpiang Shanghai", vegetarian: false, pork: false, seafood: false, spicy: false }
-                ]
-            };
-
-            // Filter dishes based on restrictions and preferences
-            function filterDishes(dishes) {
-                return dishes.filter(dish => {
-                    // Check dietary restrictions
-                    if (restrictions.includes('vegetarian') && !dish.vegetarian) return false;
-                    if (restrictions.includes('no-pork') && dish.pork) return false;
-                    if (restrictions.includes('no-seafood') && dish.seafood) return false;
-                    if (restrictions.includes('halal') && dish.pork) return false;
-                    
-                    // Check allergies
-                    if (allergies && allergies.toLowerCase().includes('fish') && dish.seafood) return false;
-                    if (allergies && allergies.toLowerCase().includes('shellfish') && dish.seafood) return false;
-                    
-                    // Check user preferences for spice
-                    if (userPrefs && userPrefs.toLowerCase().includes('no spicy') && dish.spicy) return false;
-                    
-                    return true;
-                });
-            }
-
-            // Generate meal plan
-            const mealPlan = {};
-            const dayNames = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'];
-            const usedDishes = { breakfast: [], lunch: [], dinner: [] };
-            
-            for (let i = 0; i < days; i++) {
-                const day = dayNames[i];
-                mealPlan[day] = {
-                    breakfast: getSmartDish(filterDishes(filipinoDishes.breakfast), usedDishes.breakfast),
-                    lunch: getSmartDish(filterDishes(filipinoDishes.lunch), usedDishes.lunch),
-                    dinner: getSmartDish(filterDishes(filipinoDishes.dinner), usedDishes.dinner)
-                };
-            }
-
-            function getSmartDish(dishes, usedList) {
-                if (dishes.length === 0) return "Rice with vegetables";
-                
-                // Try to avoid repeating dishes
-                const availableDishes = dishes.filter(dish => !usedList.includes(dish.name));
-                const selectedDishes = availableDishes.length > 0 ? availableDishes : dishes;
-                
-                const selected = selectedDishes[Math.floor(Math.random() * selectedDishes.length)];
-                usedList.push(selected.name);
-                
-                // Keep used list manageable
-                if (usedList.length > 3) usedList.shift();
-                
-                return selected.name;
-            }
-
-            // Generate smart grocery list
-            const baseMultiplier = people * (days / 7);
-            const groceryList = {
-                "Rice & Grains": [
-                    { 
-                        name: "Rice", 
-                        quantity: Math.ceil(baseMultiplier * 2).toString(), 
-                        unit: "kg", 
-                        price: Math.ceil(baseMultiplier * 2) * 50 
-                    }
-                ],
-                "Meat & Poultry": restrictions.includes('vegetarian') ? [] : [
-                    { 
-                        name: "Chicken", 
-                        quantity: Math.ceil(baseMultiplier * 1.5).toString(), 
-                        unit: "kg", 
-                        price: Math.ceil(baseMultiplier * 1.5) * 180 
-                    },
-                    ...(restrictions.includes('no-pork') || restrictions.includes('halal') ? [] : [{
-                        name: "Pork", 
-                        quantity: Math.ceil(baseMultiplier * 1).toString(), 
-                        unit: "kg", 
-                        price: Math.ceil(baseMultiplier * 1) * 250 
-                    }])
-                ],
-                "Seafood": restrictions.includes('no-seafood') || (allergies && allergies.toLowerCase().includes('fish')) ? [] : [
-                    { 
-                        name: "Fish", 
-                        quantity: Math.ceil(baseMultiplier * 0.8).toString(), 
-                        unit: "kg", 
-                        price: Math.ceil(baseMultiplier * 0.8) * 200 
-                    }
-                ],
-                "Vegetables": [
-                    { name: "Mixed Vegetables", quantity: Math.ceil(baseMultiplier * 1.5).toString(), unit: "kg", price: Math.ceil(baseMultiplier * 1.5) * 80 },
-                    { name: "Onions", quantity: "1", unit: "kg", price: 80 },
-                    { name: "Garlic", quantity: "0.25", unit: "kg", price: 50 }
-                ],
-                "Pantry Essentials": [
-                    { name: "Cooking Oil", quantity: "1", unit: "bottle", price: 80 },
-                    { name: "Soy Sauce", quantity: "1", unit: "bottle", price: 30 },
-                    { name: "Vinegar", quantity: "1", unit: "bottle", price: 20 },
-                    { name: "Salt", quantity: "1", unit: "pack", price: 15 }
-                ]
-            };
-
-            // Calculate total cost
-            let totalCost = 0;
-            Object.values(groceryList).forEach(category => {
-                category.forEach(item => totalCost += item.price);
-            });
-
-            // Adjust if over budget
-            if (totalCost > budget) {
-                const reductionFactor = budget / totalCost;
-                Object.values(groceryList).forEach(category => {
-                    category.forEach(item => {
-                        item.price = Math.floor(item.price * reductionFactor);
-                    });
-                });
-                totalCost = Math.floor(budget * 0.95);
-            }
-
-            // Generate personalized tips
-            let tips = `Customized for ${people} people over ${days} days. `;
-            if (restrictions.length > 0) {
-                tips += `Following ${restrictions.join(', ')} dietary preferences. `;
-            }
-            if (allergies) {
-                tips += `Avoiding ${allergies}. `;
-            }
-            tips += "Buy rice and pantry items in bulk to save money!";
-
-            return {
-                mealPlan,
-                groceryList,
-                totalCost,
-                tips,
-                source: 'enhanced_smart_generation'
-            };
-        }
-
-        function displayAIResults(recipeData, budget) {
-            // Show custom recipe database badge
-            const sourceBadge = '<div style="background: linear-gradient(135deg, #10b981, #059669); padding: 12px; border-radius: 10px; margin-bottom: 15px; font-size: 0.95rem; color: white; text-align: center; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">📚 Your Custom Recipe Collection (204 recipes)</div>';
-
-            // Display meal plan from your recipes
-            const mealPlanHTML = Object.entries(recipeData.mealPlan).map(([day, meals]) => `
-                <div class="day-card">
-                    <div class="day-title">${day}</div>
-                    <div class="meal">
-                        <div class="meal-type">🌅 Breakfast</div>
-                        <div class="meal-name">${meals.breakfast}</div>
-                    </div>
-                    <div class="meal">
-                        <div class="meal-type">☀️ Lunch</div>
-                        <div class="meal-name">${meals.lunch}</div>
-                    </div>
-                    <div class="meal">
-                        <div class="meal-type">🌙 Dinner</div>
-                        <div class="meal-name">${meals.dinner}</div>
-                    </div>
-                </div>
-            `).join('');
-
-            // Display grocery list from your recipe data
-            const groceryHTML = Object.entries(recipeData.groceryList).map(([category, items]) => {
-                if (items.length === 0) return '';
-                
-                const categoryHTML = items.map(item => `
-                    <div class="grocery-item">
-                        <div>
-                            <span class="grocery-name">${item.name} (${item.quantity} ${item.unit})</span>
-                            ${item.notes ? `<div class="grocery-details">💡 ${item.notes}</div>` : ''}
-                        </div>
-                        <span class="price">₱${item.price}</span>
-                    </div>
-                `).join('');
-                
-                return `
-                    <div class="grocery-category">${category}</div>
-                    ${categoryHTML}
-                `;
-            }).join('');
-
-            const totalCost = recipeData.totalCost || 0;
-            const budgetStatus = totalCost <= budget ? 'Within Budget! 🎉' : 'Over Budget ⚠️';
-            const budgetColor = totalCost <= budget ? '#48bb78' : '#e53e3e';
-
-            // Enhanced content for your recipe collection
-            let enhancedContent = `
-                <div style="background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #10b981;">
-                    <strong>📚 Recipe Source:</strong> Custom database with 204 curated Filipino recipes from your Google Sheets
-                </div>
-            `;
-            
-            // Cooking Tips
-            if (recipeData.cookingTips && Array.isArray(recipeData.cookingTips)) {
-                enhancedContent += `
-                    <div style="background: rgba(255, 107, 157, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #ff6b9d;">
-                        <strong>👩‍🍳 Smart Cooking Tips:</strong>
-                        <ul style="margin: 8px 0 0 20px;">
-                            ${recipeData.cookingTips.map(tip => `<li style="margin: 4px 0;">${tip}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-            
-            // Nutrition Notes
-            if (recipeData.nutritionNotes) {
-                enhancedContent += `
-                    <div style="background: rgba(34, 197, 94, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #22c55e;">
-                        <strong>🥗 Nutrition Overview:</strong> ${recipeData.nutritionNotes}
-                    </div>
-                `;
-            }
-            
-            // Shopping Strategy
-            if (recipeData.shoppingStrategy) {
-                enhancedContent += `
-                    <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #3b82f6;">
-                        <strong>🛒 Shopping Strategy:</strong> ${recipeData.shoppingStrategy}
-                    </div>
-                `;
-            }
-
-            document.getElementById('mealPlan').innerHTML = `
-                <h3>🍽️ Your Personalized Meal Plan</h3>
-                ${sourceBadge}
-                ${mealPlanHTML}
-                ${enhancedContent}
-            `;
-
-            // Budget breakdown display
-            let budgetBreakdownHTML = '';
-            if (recipeData.budgetBreakdown) {
-                budgetBreakdownHTML = `
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px; margin: 15px 0;">
-                        <strong>📊 Budget Allocation:</strong>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 8px;">
-                            ${Object.entries(recipeData.budgetBreakdown).map(([category, amount]) => 
-                                `<div style="text-align: center; padding: 8px; background: rgba(255, 107, 157, 0.1); border-radius: 6px;">
-                                    <div style="font-size: 0.85rem; text-transform: capitalize;">${category}</div>
-                                    <div style="font-weight: 600; color: #ff6b9d;">₱${amount}</div>
-                                </div>`
-                            ).join('')}
-                        </div>
-                    </div>
-                `;
-            }
-
-            document.getElementById('groceryList').innerHTML = `
-                <h3>🛒 Your Shopping List</h3>
-                ${groceryHTML}
-                ${budgetBreakdownHTML}
-                <div class="total-budget" style="background: ${budgetColor}">
-                    Total Cost: ₱${totalCost} / ₱${budget}<br>
-                    ${budgetStatus}
-                </div>
-            `;
-
-            document.getElementById('loadingState').style.display = 'none';
-            document.getElementById('results').style.display = 'block';
-            document.getElementById('generateBtn').disabled = false;
+            setTimeout(() => {
+                const mealPlan = createMealPlan(days, mainIngredient, cuisine);
+                displayMealPlan(mealPlan, days, people);
+            }, 1500);
         }
 
         function showLoading() {
-            document.getElementById('generateBtn').disabled = true;
-            document.getElementById('loadingState').style.display = 'block';
-            document.getElementById('results').style.display = 'none';
+            document.getElementById('resultsPanel').innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Creating your meal plan...</p>
+                </div>
+            `;
         }
 
-        function createMealPlan(preferences) {
+        function createMealPlan(days, mainIngredient, cuisine) {
+            const mealTypes = ['Breakfast', 'Lunch', 'Dinner'];
+            const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
             const plan = {};
-            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-            
-            for (let i = 0; i < preferences.days; i++) {
-                const day = days[i];
-                plan[day] = {
-                    breakfast: getRandomDish('breakfast', preferences),
-                    lunch: getRandomDish('lunch', preferences),
-                    dinner: getRandomDish('dinner', preferences)
-                };
-            }
-            
-            return plan;
-        }
 
-        function getRandomDish(mealType, preferences) {
-            const dishes = filipinoDishes[mealType];
-            let availableDishes = dishes.filter(dish => {
-                // Simple filtering based on restrictions
-                if (preferences.restrictions.includes('vegetarian') && 
-                    dish.ingredients.some(ing => ['chicken', 'pork', 'beef', 'fish'].includes(ing))) {
+            // Filter recipes based on preferences
+            let filteredRecipes = recipesData.filter(recipe => {
+                if (mainIngredient && recipe['  Main Ingredient'] !== mainIngredient) {
                     return false;
                 }
-                if (preferences.restrictions.includes('no-pork') && 
-                    dish.ingredients.some(ing => ing.includes('pork'))) {
+                if (cuisine && recipe.Cuisine !== cuisine) {
                     return false;
                 }
                 return true;
             });
-            
-            if (availableDishes.length === 0) availableDishes = dishes;
-            
-            return availableDishes[Math.floor(Math.random() * availableDishes.length)];
+
+            // If no recipes match criteria, use all recipes
+            if (filteredRecipes.length === 0) {
+                filteredRecipes = recipesData;
+            }
+
+            for (let i = 0; i < days; i++) {
+                const day = dayNames[i];
+                plan[day] = {};
+                
+                mealTypes.forEach(mealType => {
+                    const randomRecipe = filteredRecipes[Math.floor(Math.random() * filteredRecipes.length)];
+                    plan[day][mealType] = randomRecipe;
+                });
+            }
+
+            return plan;
         }
 
-        function createGroceryList(mealPlan, preferences) {
-            const ingredients = {};
-            const categories = {};
+        function displayMealPlan(mealPlan, days, people) {
+            const mealTypes = ['Breakfast', 'Lunch', 'Dinner'];
             
-            // Collect all ingredients
-            Object.values(mealPlan).forEach(day => {
-                ['breakfast', 'lunch', 'dinner'].forEach(meal => {
-                    day[meal].ingredients.forEach(ingredient => {
-                        if (!ingredients[ingredient]) {
-                            ingredients[ingredient] = 0;
-                        }
-                        ingredients[ingredient] += 1;
-                    });
-                });
-            });
-
-            // Calculate quantities and organize by category
-            Object.keys(ingredients).forEach(ingredient => {
-                const baseIngredient = ingredient.toLowerCase();
-                const groceryItem = groceryPrices[baseIngredient] || groceryPrices[ingredient] || { price: 50, unit: 'pack', category: 'Other' };
-                
-                const quantity = Math.ceil(ingredients[ingredient] * preferences.people / 7);
-                const totalPrice = quantity * groceryItem.price;
-                
-                if (!categories[groceryItem.category]) {
-                    categories[groceryItem.category] = [];
-                }
-                
-                categories[groceryItem.category].push({
-                    name: ingredient,
-                    quantity: quantity,
-                    unit: groceryItem.unit,
-                    price: totalPrice
-                });
-            });
-
-            return categories;
-        }
-
-        function displayResults(mealPlan, groceryList, budget) {
-            // Display meal plan
-            const mealPlanHTML = Object.entries(mealPlan).map(([day, meals]) => `
-                <div class="day-card">
-                    <div class="day-title">${day}</div>
-                    <div class="meal">
-                        <div class="meal-type">🌅 Breakfast</div>
-                        <div>${meals.breakfast.name}</div>
+            let html = `
+                <div class="meal-plan">
+                    <div class="plan-header">
+                        <div class="plan-title">${days}-Day Meal Plan</div>
+                        <div class="plan-subtitle">For ${people} ${people === 1 ? 'person' : 'people'}</div>
                     </div>
-                    <div class="meal">
-                        <div class="meal-type">☀️ Lunch</div>
-                        <div>${meals.lunch.name}</div>
-                    </div>
-                    <div class="meal">
-                        <div class="meal-type">🌙 Dinner</div>
-                        <div>${meals.dinner.name}</div>
-                    </div>
-                </div>
-            `).join('');
+            `;
 
-            // Display grocery list
-            let totalCost = 0;
-            const groceryHTML = Object.entries(groceryList).map(([category, items]) => {
-                const categoryHTML = items.map(item => {
-                    totalCost += item.price;
-                    return `
-                        <div class="grocery-item">
-                            <span>${item.name} (${item.quantity} ${item.unit})</span>
-                            <span class="price">₱${item.price}</span>
+            Object.entries(mealPlan).forEach(([day, meals]) => {
+                html += `
+                    <div class="day-section">
+                        <div class="day-header">${day}</div>
+                        <div class="meals-grid">
+                `;
+
+                mealTypes.forEach(mealType => {
+                    const meal = meals[mealType];
+                    html += `
+                        <div class="meal-card">
+                            <div class="meal-type">${mealType}</div>
+                            <div class="meal-name">${meal.recipe_name}</div>
+                            <div class="meal-ingredient">Main: ${meal['  Main Ingredient'] || 'Mixed'}</div>
+                            ${meal.recipe_link && meal.recipe_link !== '#' ? 
+                                `<a href="${meal.recipe_link}" target="_blank" class="meal-link">View Recipe →</a>` : ''}
                         </div>
                     `;
-                }).join('');
-                
-                return `
-                    <div class="grocery-category">${category}</div>
-                    ${categoryHTML}
+                });
+
+                html += `
+                        </div>
+                    </div>
                 `;
-            }).join('');
+            });
 
-            const budgetStatus = totalCost <= budget ? 'Within Budget! 🎉' : 'Over Budget ⚠️';
-            const budgetColor = totalCost <= budget ? '#48bb78' : '#e53e3e';
+            html += '</div>';
 
-            document.getElementById('mealPlan').innerHTML = `
-                <h3>🍽️ Your Weekly Meal Plan</h3>
-                ${mealPlanHTML}
-            `;
-
-            document.getElementById('groceryList').innerHTML = `
-                <h3>🛒 Shopping List</h3>
-                ${groceryHTML}
-                <div class="total-budget" style="background: ${budgetColor}">
-                    Total Cost: ₱${totalCost} / ₱${budget}<br>
-                    ${budgetStatus}
-                </div>
-            `;
-
-            document.getElementById('loadingState').style.display = 'none';
-            document.getElementById('results').style.display = 'block';
-            document.getElementById('generateBtn').disabled = false;
+            document.getElementById('resultsPanel').innerHTML = html;
         }
+
+        // Load recipes when page loads
+        window.addEventListener('load', loadRecipes);
     </script>
 </body>
 </html>
