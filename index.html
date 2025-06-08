@@ -465,7 +465,6 @@
 
         function generateMealPlan() {
             const days = parseInt(document.getElementById('days').value);
-            const people = parseInt(document.getElementById('people').value);
             const mainIngredient = document.getElementById('mainIngredient').value;
             const cuisine = document.getElementById('cuisine').value;
 
@@ -473,7 +472,7 @@
 
             setTimeout(() => {
                 const mealPlan = createMealPlan(days, mainIngredient, cuisine);
-                displayMealPlan(mealPlan, days, people);
+                displayMealPlan(mealPlan, days);
             }, 1500);
         }
 
@@ -544,7 +543,7 @@
             return plan;
         }
 
-        function displayMealPlan(mealPlan, days, people) {
+        function displayMealPlan(mealPlan, days) {
             // Calculate variety metrics
             const allMeals = Object.values(mealPlan).map(recipe => recipe.recipe_name);
             const uniqueMeals = new Set(allMeals);
@@ -554,7 +553,6 @@
                 <div class="meal-plan">
                     <div class="plan-header">
                         <div class="plan-title">${days}-Day Meal Plan</div>
-                        <div class="plan-subtitle">For ${people} ${people === 1 ? 'person' : 'people'} • One main dish per day</div>
                     </div>
                     
                     <div class="variety-info">
