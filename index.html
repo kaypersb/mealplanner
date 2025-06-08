@@ -384,7 +384,7 @@
         async function loadRecipes() {
             try {
                 console.log('Loading recipes from CSV...');
-                const response = await fetch('main/input/MealsToday - recipe_main.csv');
+                const response = await fetch('input/MealsToday - recipe_main.csv');
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
