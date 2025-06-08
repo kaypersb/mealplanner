@@ -514,7 +514,7 @@
         function createMealPlan(days, selectedIngredients, cuisine) {
             const plan = {};
             const usedRecipeIds = new Set(); // Track used recipe IDs to prevent exact repeats
-            console.log("recipesData is", recipesData);
+            
             // Filter recipes based on preferences
             let filteredRecipes = recipesData.filter(recipe => {
                 // Debug: log what we're working with
@@ -522,11 +522,12 @@
                 // If ingredients are selected, recipe must match one of them
                 if (selectedIngredients.length > 0) {
                     // Clean the recipe ingredient (trim spaces and normalize)
-                    const recipeIngredient = (recipe['  Main Ingredient'] || '').trim();
-                    
+                    const recipeIngredient = (recipe['Main Ingredient'] || '').trim();
+                    console.log("recipesData is", recipeIngredient);
                     // Check if any selected ingredient matches (case-insensitive)
                     const matches = selectedIngredients.some(selectedIng => 
                         selectedIng.toLowerCase() === recipeIngredient.toLowerCase()
+                        console.log("selectedIng is", selectedIng);
                     );
                     
                     
