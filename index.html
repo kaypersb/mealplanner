@@ -318,17 +318,41 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="mainIngredient">Preferred Main Ingredient</label>
-                        <select id="mainIngredient">
-                            <option value="">Any ingredient</option>
-                            <option value="Chicken">Chicken</option>
-                            <option value="Fish">Fish</option>
-                            <option value="Pork">Pork</option>
-                            <option value="Beef">Beef</option>
-                            <option value="Seafood">Seafood</option>
-                            <option value="Vegetable">Vegetable</option>
-                            <option value="Pasta">Pasta</option>
-                        </select>
+                        <label>Preferred Main Ingredients</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chicken" value="Chicken">
+                                <label for="chicken">Chicken</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="fish" value="Fish">
+                                <label for="fish">Fish</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="pork" value="Pork">
+                                <label for="pork">Pork</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="beef" value="Beef">
+                                <label for="beef">Beef</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="seafood" value="Seafood">
+                                <label for="seafood">Seafood</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="vegetable" value="Vegetable">
+                                <label for="vegetable">Vegetable</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="rice" value="Rice">
+                                <label for="rice">Rice</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="pasta" value="Pasta">
+                                <label for="pasta">Pasta</label>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -465,14 +489,16 @@
 
         function generateMealPlan() {
             const days = parseInt(document.getElementById('days').value);
-            const mainIngredient = document.getElementById('mainIngredient').value;
+            //const mainIngredient = document.getElementById('mainIngredient').value;
             const cuisine = document.getElementById('cuisine').value;
 
+            const selectedIngredients = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
             showLoading();
 
             setTimeout(() => {
-                const mealPlan = createMealPlan(days, mainIngredient, cuisine);
-                displayMealPlan(mealPlan, days);
+                const mealPlan = createMealPlan(days, selectedIngredients, cuisine);
+                displayMealPlan(mealPlan, days, people);
             }, 1500);
         }
 
@@ -491,7 +517,9 @@
 
             // Filter recipes based on preferences
             let filteredRecipes = recipesData.filter(recipe => {
-                if (mainIngredient && recipe['  Main Ingredient'] !== mainIngredient) {
+                // If ingredients are selected, recipe must match one of them
+                if (selectedIngredients.length > 0 && 
+                    !selectedIngredients.includes(recipe['  Main Ingredient'])) {
                     return false;
                 }
                 if (cuisine && recipe.Cuisine !== cuisine) {
@@ -499,6 +527,11 @@
                 }
                 return true;
             });
+
+            // If no recipes match criteria, use all recipes
+            if (filteredRecipes.length === 0) {
+                filteredRecipes = recipesData;
+            }
 
             // If no recipes match criteria, use all recipes
             if (filteredRecipes.length === 0) {
