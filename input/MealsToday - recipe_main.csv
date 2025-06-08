@@ -1,4 +1,4 @@
-recipe_id,recipe_name,  Main Ingredient,recipe_link,Cuisine,recipe_image,notes,contributed_by,alternatives
+recipe_id,recipe_name,recipe_main_ingredient,recipe_link,Cuisine,recipe_image,notes,contributed_by,alternatives
 1,Chicken in Tarragon Marinade,Chicken,https://www.instagram.com/p/CHWu5B0n4zC/?utm_source=ig_web_copy_link,,,Inspired by @dietitiansamantha,Kitchenkaypers,
 2,Baked Pampano,Fish,https://www.instagram.com/p/CGwOHnAnCRP/,Filipino,,,,
 3,Baked Salmon Fillet in Cream Sauce,Fish,https://www.yummy.ph/lessons/cooking/how-to-make-baked-salmon-ala-contis-recipe-video-a00249-20201218?ref=feed_1,,,,,
