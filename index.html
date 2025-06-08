@@ -751,4 +751,85 @@
                     // clear the used set and start over
                     if (!selectedRecipe && usedRecipeIds.size >= filteredRecipes.length) {
                         usedRecipeIds.clear();
-                        selectedRecipe
+                        selectedRecipe = shuffledRecipes[0];
+                        usedRecipeIds.add(selectedRecipe.recipe_id || selectedRecipe.recipe_name);
+                    }
+                    
+                    // Absolute fallback - should never happen
+                    if (!selectedRecipe) {
+                        selectedRecipe = shuffledRecipes[Math.floor(Math.random() * shuffledRecipes.length)];
+                    }
+                    
+                    plan[dayKey][mealType] = selectedRecipe;
+                }
+            }
+
+            return plan;
+        }
+
+        function displayMealPlan(mealPlan, days, mealsPerDay) {
+            // Calculate variety metrics
+            const allMeals = [];
+            Object.values(mealPlan).forEach(day => {
+                Object.values(day).forEach(recipe => {
+                    allMeals.push(recipe.recipe_name);
+                });
+            });
+            
+            const uniqueMeals = new Set(allMeals);
+            const varietyPercentage = Math.round((uniqueMeals.size / allMeals.length) * 100);
+            const totalMeals = days * mealsPerDay;
+            
+            let html = `
+                <div class="meal-plan">
+                    <div class="plan-header">
+                        <div class="plan-title">${days}-Day Meal Plan</div>
+                        <div class="plan-subtitle">${totalMeals} total meals (${mealsPerDay} meal${mealsPerDay > 1 ? 's' : ''} per day)</div>
+                    </div>
+                    
+                    <div class="variety-info">
+                        📊 <strong>Meal Variety:</strong> ${uniqueMeals.size} unique recipes out of ${totalMeals} total meals (${varietyPercentage}% variety)
+                        ${varietyPercentage === 100 ? ' - Perfect variety! No repeats! 🌟' : 
+                          varietyPercentage >= 80 ? ' - Excellent variety! 🌟' : 
+                          varietyPercentage >= 60 ? ' - Good variety! 👍' : 
+                          ' - Consider trying different ingredients for more variety 💡'}
+                    </div>
+            `;
+
+            Object.entries(mealPlan).forEach(([day, meals]) => {
+                html += `
+                    <div class="day-section">
+                        <div class="day-header">${day}</div>
+                        <div class="meals-grid">
+                `;
+
+                // Display meals based on how many are planned for the day
+                Object.entries(meals).forEach(([mealType, recipe]) => {
+                    html += `
+                        <div class="meal-card">
+                            <div class="meal-type">${mealType}</div>
+                            <div class="meal-name">${recipe.recipe_name}</div>
+                            <div class="meal-ingredient">Main: ${recipe.recipe_main_ingredient}</div>
+                            ${recipe.notes ? `<div class="meal-ingredient">Notes: ${recipe.notes}</div>` : ''}
+                            ${recipe.recipe_link && recipe.recipe_link !== '#' ? 
+                                `<a href="${recipe.recipe_link}" target="_blank" class="meal-link">View Recipe →</a>` : ''}
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+
+            document.getElementById('resultsPanel').innerHTML = html;
+        }
+
+        // Load recipes when page loads
+        window.addEventListener('load', loadRecipes);
+    </script>
+</body>
+</html>
