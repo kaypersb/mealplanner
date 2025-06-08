@@ -522,11 +522,13 @@
                 // If ingredients are selected, recipe must match one of them
                 if (selectedIngredients.length > 0 && 
                     !selectedIngredients.includes(recipe['  Main Ingredient'])) {
+                    console.log("selected ingredient does not inlcude main ingredient" , recipe['  Main Ingredient'])
                     return false;
                 }
                 if (cuisine && recipe.Cuisine !== cuisine) {
                     return false;
                 }
+                console.log("CURRENT RECIPE" , recipe['  Main Ingredient'])
                 return true;
             });
 
