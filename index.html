@@ -514,7 +514,7 @@
         function createMealPlan(days, selectedIngredients, cuisine) {
             const plan = {};
             const usedRecipeIds = new Set(); // Track used recipe IDs to prevent exact repeats
-
+            console.log("recipesData is", recipesData);
             // Filter recipes based on preferences
             let filteredRecipes = recipesData.filter(recipe => {
                 // Debug: log what we're working with
