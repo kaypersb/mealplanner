@@ -511,7 +511,7 @@
             `;
         }
 
-        function createMealPlan(days, mainIngredient, cuisine) {
+        function createMealPlan(days, selectedIngredients, cuisine) {
             const plan = {};
             const usedRecipeIds = new Set(); // Track used recipe IDs to prevent exact repeats
 
