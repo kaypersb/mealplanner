@@ -522,7 +522,6 @@
                 // If ingredients are selected, recipe must match one of them
                 if (selectedIngredients.length > 0 && 
                     !selectedIngredients.includes(recipe['  Main Ingredient'])) {
-                    console.log("Selected ingredient", selectedIngredients)
                     return false;
                 }
                 if (cuisine && recipe.Cuisine !== cuisine) {
@@ -531,6 +530,7 @@
                 return true;
             });
 
+            console.log("Filtered Recipe", filteredRecipes, selectedIngredients.length)
             // If no recipes match criteria, use all recipes
             if (filteredRecipes.length === 0) {
                 filteredRecipes = recipesData;
