@@ -517,20 +517,39 @@
             const plan = {};
             const usedRecipeIds = new Set(); // Track used recipe IDs to prevent exact repeats
 
+
             // Filter recipes based on preferences
             let filteredRecipes = recipesData.filter(recipe => {
+                // Debug: log what we're working with
+                console.log("Recipe main ingredient:", `"${recipe['  Main Ingredient']}"`);
+                console.log("Selected ingredients:", selectedIngredients);
+                
                 // If ingredients are selected, recipe must match one of them
-                if (selectedIngredients.length > 0 && 
-                    !selectedIngredients.includes(recipe['  Main Ingredient'])) {
-                    console.log("selected ingredient does not inlcude main ingredient" , recipe['  Main Ingredient'])
-                    return false;
+                if (selectedIngredients.length > 0) {
+                    // Clean the recipe ingredient (trim spaces and normalize)
+                    const recipeIngredient = (recipe['  Main Ingredient'] || '').trim();
+                    
+                    // Check if any selected ingredient matches (case-insensitive)
+                    const matches = selectedIngredients.some(selectedIng => 
+                        selectedIng.toLowerCase() === recipeIngredient.toLowerCase()
+                    );
+                    
+                    console.log(`Checking if "${recipeIngredient}" matches any of:`, selectedIngredients, "Result:", matches);
+                    
+                    if (!matches) {
+                        console.log("❌ Recipe filtered out - ingredient mismatch");
+                        return false;
+                    }
                 }
+                
                 if (cuisine && recipe.Cuisine !== cuisine) {
+                    console.log("❌ Recipe filtered out - cuisine mismatch");
                     return false;
                 }
-                console.log("CURRENT RECIPE" , recipe['  Main Ingredient'])
+                
+                console.log("✅ Recipe included:", recipe.recipe_name);
                 return true;
-            });
+                
 
             console.log("Filtered Recipe", filteredRecipes, selectedIngredients.length)
             // If no recipes match criteria, use all recipes
