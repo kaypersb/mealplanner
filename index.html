@@ -691,7 +691,7 @@
         function createMealPlan(days, mealsPerDay, selectedIngredients, cuisine) {
             const plan = {};
             const usedRecipeIds = new Set(); // Track used recipe IDs to prevent exact repeats
-            const mealTypes = ['Breakfast', 'Lunch', 'Dinner'];
+            const mealTypes = ['Meal 1', 'Meal 2', 'Meal 3'];
             
             // Filter recipes based on preferences
             let filteredRecipes = recipesData.filter(recipe => {
