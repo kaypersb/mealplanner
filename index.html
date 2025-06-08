@@ -118,6 +118,102 @@
             border-color: #3498db;
         }
 
+        .dropdown-checkbox {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-toggle:hover {
+            border-color: #3498db;
+        }
+
+        .dropdown-toggle.active {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .dropdown-text {
+            color: #2c3e50;
+            flex: 1;
+        }
+
+        .dropdown-text.placeholder {
+            color: #7f8c8d;
+        }
+
+        .dropdown-arrow {
+            color: #7f8c8d;
+            transition: transform 0.2s ease;
+        }
+
+        .dropdown-toggle.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu .checkbox-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f8f9fa;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-menu .checkbox-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu .checkbox-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .dropdown-menu .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-menu .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            transform: scale(1.1);
+        }
+
+        .dropdown-menu .checkbox-item label {
+            margin-bottom: 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+
         .generate-btn {
             width: 100%;
             padding: 1rem;
@@ -319,38 +415,44 @@
 
                     <div class="form-group">
                         <label>Preferred Main Ingredients</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="chicken" value="Chicken">
-                                <label for="chicken">Chicken</label>
+                        <div class="dropdown-checkbox">
+                            <div class="dropdown-toggle" id="ingredientDropdown">
+                                <span class="dropdown-text">Select ingredients...</span>
+                                <span class="dropdown-arrow">▼</span>
                             </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="fish" value="Fish">
-                                <label for="fish">Fish</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="pork" value="Pork">
-                                <label for="pork">Pork</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="beef" value="Beef">
-                                <label for="beef">Beef</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="seafood" value="Seafood">
-                                <label for="seafood">Seafood</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="vegetable" value="Vegetable">
-                                <label for="vegetable">Vegetable</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="rice" value="Rice">
-                                <label for="rice">Rice</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="pasta" value="Pasta">
-                                <label for="pasta">Pasta</label>
+                            <div class="dropdown-menu" id="ingredientDropdownMenu">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="chicken" value="Chicken">
+                                    <label for="chicken">Chicken</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="fish" value="Fish">
+                                    <label for="fish">Fish</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="pork" value="Pork">
+                                    <label for="pork">Pork</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="beef" value="Beef">
+                                    <label for="beef">Beef</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="seafood" value="Seafood">
+                                    <label for="seafood">Seafood</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="vegetable" value="Vegetable">
+                                    <label for="vegetable">Vegetable</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="rice" value="Rice">
+                                    <label for="rice">Rice</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="pasta" value="Pasta">
+                                    <label for="pasta">Pasta</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -465,6 +567,58 @@
                 return false;
             }
         }
+
+                // Dropdown checkbox functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggle = document.getElementById('ingredientDropdown');
+            const dropdownMenu = document.getElementById('ingredientDropdownMenu');
+            const dropdownText = dropdownToggle.querySelector('.dropdown-text');
+            const checkboxes = dropdownMenu.querySelectorAll('input[type="checkbox"]');
+
+            // Toggle dropdown
+            dropdownToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownToggle.classList.toggle('active');
+                dropdownMenu.classList.toggle('show');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownToggle.classList.remove('active');
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+
+            // Update dropdown text when checkboxes change
+            function updateDropdownText() {
+                const selectedOptions = Array.from(checkboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.nextElementSibling.textContent);
+
+                if (selectedOptions.length === 0) {
+                    dropdownText.textContent = 'Select ingredients...';
+                    dropdownText.classList.add('placeholder');
+                } else if (selectedOptions.length === 1) {
+                    dropdownText.textContent = selectedOptions[0];
+                    dropdownText.classList.remove('placeholder');
+                } else {
+                    dropdownText.textContent = `${selectedOptions.length} ingredients selected`;
+                    dropdownText.classList.remove('placeholder');
+                }
+            }
+
+            // Add event listeners to checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateDropdownText);
+            });
+
+            // Prevent dropdown from closing when clicking inside menu
+            dropdownMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
 
         // Day selector functionality
         document.querySelectorAll('.day-option').forEach(option => {
