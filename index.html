@@ -496,8 +496,6 @@
                 .map(checkbox => checkbox.value);
             showLoading();
 
-             console.log('Ingredients chosen', selectedIngredients);
-
             setTimeout(() => {
                 const mealPlan = createMealPlan(days, selectedIngredients, cuisine);
                 displayMealPlan(mealPlan, days);
@@ -520,8 +518,7 @@
             // Filter recipes based on preferences
             let filteredRecipes = recipesData.filter(recipe => {
                 // Debug: log what we're working with
-                console.log("Recipe main ingredient:", `"${recipe}"`);
-                
+
                 // If ingredients are selected, recipe must match one of them
                 if (selectedIngredients.length > 0) {
                     // Clean the recipe ingredient (trim spaces and normalize)
@@ -532,20 +529,19 @@
                         selectedIng.toLowerCase() === recipeIngredient.toLowerCase()
                     );
                     
-                    console.log(`Checking if "${recipeIngredient}" matches any of:`, selectedIngredients, "Result:", matches);
                     
                     if (!matches) {
-                        console.log("❌ Recipe filtered out - ingredient mismatch");
+                      //  console.log("❌ Recipe filtered out - ingredient mismatch");
                         return false;
                     }
                 }
                 
                 if (cuisine && recipe.Cuisine !== cuisine) {
-                    console.log("❌ Recipe filtered out - cuisine mismatch");
+                 //   console.log("❌ Recipe filtered out - cuisine mismatch");
                     return false;
                 }
                 
-                console.log("✅ Recipe included:", recipe.recipe_name);
+               // console.log("✅ Recipe included:", recipe.recipe_name);
                 return true;
             });
 
