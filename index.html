@@ -217,16 +217,17 @@
         }
 
         .meals-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
+            display: flex;
+            justify-content: center;
         }
 
         .meal-card {
             border: 1px solid #ecf0f1;
             border-radius: 8px;
-            padding: 1rem;
+            padding: 1.5rem;
             transition: all 0.2s ease;
+            width: 100%;
+            max-width: 400px;
         }
 
         .meal-card:hover {
@@ -243,9 +244,10 @@
         }
 
         .meal-name {
-            font-weight: 500;
+            font-weight: 600;
             color: #2c3e50;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
         }
 
         .meal-ingredient {
@@ -337,7 +339,6 @@
                             <option value="Beef">Beef</option>
                             <option value="Seafood">Seafood</option>
                             <option value="Vegetable">Vegetable</option>
-                            <option value="Rice">Rice</option>
                             <option value="Pasta">Pasta</option>
                         </select>
                     </div>
@@ -498,10 +499,8 @@
         }
 
         function createMealPlan(days, mainIngredient, cuisine) {
-            const mealTypes = ['Breakfast', 'Lunch', 'Dinner'];
-            const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
             const plan = {};
-            const usedRecipes = new Set(); // Track used recipes to prevent repeats
+            const usedRecipeIds = new Set(); // Track used recipe IDs to prevent exact repeats
 
             // Filter recipes based on preferences
             let filteredRecipes = recipesData.filter(recipe => {
@@ -523,51 +522,43 @@
             const shuffledRecipes = [...filteredRecipes].sort(() => Math.random() - 0.5);
 
             for (let i = 0; i < days; i++) {
-                const day = dayNames[i];
-                plan[day] = {};
+                const dayKey = `Day ${i + 1}`;
                 
-                mealTypes.forEach(mealType => {
-                    // Find a recipe that hasn't been used yet
-                    let selectedRecipe = null;
-                    let attempts = 0;
-                    const maxAttempts = filteredRecipes.length * 2; // Allow some flexibility
-                    
-                    while (!selectedRecipe && attempts < maxAttempts) {
-                        const randomIndex = Math.floor(Math.random() * shuffledRecipes.length);
-                        const candidate = shuffledRecipes[randomIndex];
-                        
-                        // For longer meal plans, allow some repetition but prefer variety
-                        const recipeKey = `${candidate.recipe_name}-${mealType}`;
-                        if (!usedRecipes.has(recipeKey) || usedRecipes.size >= filteredRecipes.length) {
-                            selectedRecipe = candidate;
-                            usedRecipes.add(recipeKey);
-                        }
-                        attempts++;
+                // Find a recipe that hasn't been used yet
+                let selectedRecipe = null;
+                
+                // First, try to find an unused recipe
+                for (const recipe of shuffledRecipes) {
+                    const recipeId = recipe.recipe_id || recipe.recipe_name;
+                    if (!usedRecipeIds.has(recipeId)) {
+                        selectedRecipe = recipe;
+                        usedRecipeIds.add(recipeId);
+                        break;
                     }
-                    
-                    // Fallback to any recipe if we couldn't find an unused one
-                    if (!selectedRecipe) {
-                        selectedRecipe = shuffledRecipes[Math.floor(Math.random() * shuffledRecipes.length)];
-                    }
-                    
-                    plan[day][mealType] = selectedRecipe;
-                });
+                }
+                
+                // If all recipes have been used and we need more days, 
+                // clear the used set and start over
+                if (!selectedRecipe && usedRecipeIds.size >= filteredRecipes.length) {
+                    usedRecipeIds.clear();
+                    selectedRecipe = shuffledRecipes[0];
+                    usedRecipeIds.add(selectedRecipe.recipe_id || selectedRecipe.recipe_name);
+                }
+                
+                // Absolute fallback - should never happen
+                if (!selectedRecipe) {
+                    selectedRecipe = shuffledRecipes[Math.floor(Math.random() * shuffledRecipes.length)];
+                }
+                
+                plan[dayKey] = selectedRecipe;
             }
 
             return plan;
         }
 
         function displayMealPlan(mealPlan, days, people) {
-            const mealTypes = ['Breakfast', 'Lunch', 'Dinner'];
-            
             // Calculate variety metrics
-            const allMeals = [];
-            Object.values(mealPlan).forEach(day => {
-                mealTypes.forEach(mealType => {
-                    allMeals.push(day[mealType].recipe_name);
-                });
-            });
-            
+            const allMeals = Object.values(mealPlan).map(recipe => recipe.recipe_name);
             const uniqueMeals = new Set(allMeals);
             const varietyPercentage = Math.round((uniqueMeals.size / allMeals.length) * 100);
             
@@ -575,38 +566,30 @@
                 <div class="meal-plan">
                     <div class="plan-header">
                         <div class="plan-title">${days}-Day Meal Plan</div>
-                        <div class="plan-subtitle">For ${people} ${people === 1 ? 'person' : 'people'}</div>
+                        <div class="plan-subtitle">For ${people} ${people === 1 ? 'person' : 'people'} • One main dish per day</div>
                     </div>
                     
                     <div class="variety-info">
                         📊 <strong>Meal Variety:</strong> ${uniqueMeals.size} unique recipes out of ${allMeals.length} total meals (${varietyPercentage}% variety)
-                        ${varietyPercentage >= 80 ? ' - Excellent variety! 🌟' : 
+                        ${varietyPercentage === 100 ? ' - Perfect variety! No repeats! 🌟' : 
+                          varietyPercentage >= 80 ? ' - Excellent variety! 🌟' : 
                           varietyPercentage >= 60 ? ' - Good variety! 👍' : 
                           ' - Consider trying different ingredients for more variety 💡'}
                     </div>
             `;
 
-            Object.entries(mealPlan).forEach(([day, meals]) => {
+            Object.entries(mealPlan).forEach(([day, recipe]) => {
                 html += `
                     <div class="day-section">
                         <div class="day-header">${day}</div>
                         <div class="meals-grid">
-                `;
-
-                mealTypes.forEach(mealType => {
-                    const meal = meals[mealType];
-                    html += `
-                        <div class="meal-card">
-                            <div class="meal-type">${mealType}</div>
-                            <div class="meal-name">${meal.recipe_name}</div>
-                            <div class="meal-ingredient">Main: ${meal['  Main Ingredient'] || 'Mixed'}</div>
-                            ${meal.recipe_link && meal.recipe_link !== '#' ? 
-                                `<a href="${meal.recipe_link}" target="_blank" class="meal-link">View Recipe →</a>` : ''}
-                        </div>
-                    `;
-                });
-
-                html += `
+                            <div class="meal-card">
+                                <div class="meal-name">${recipe.recipe_name}</div>
+                                <div class="meal-ingredient">Main: ${recipe['  Main Ingredient'] || 'Mixed'}</div>
+                                ${recipe.notes ? `<div class="meal-ingredient">Notes: ${recipe.notes}</div>` : ''}
+                                ${recipe.recipe_link && recipe.recipe_link !== '#' ? 
+                                    `<a href="${recipe.recipe_link}" target="_blank" class="meal-link">View Recipe →</a>` : ''}
+                            </div>
                         </div>
                     </div>
                 `;
