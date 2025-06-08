@@ -520,8 +520,7 @@
             // Filter recipes based on preferences
             let filteredRecipes = recipesData.filter(recipe => {
                 // Debug: log what we're working with
-                console.log("Recipe main ingredient:", `"${recipe['  Main Ingredient']}"`);
-                console.log("Selected ingredients:", selectedIngredients);
+                console.log("Recipe main ingredient:", `"${recipe}"`);
                 
                 // If ingredients are selected, recipe must match one of them
                 if (selectedIngredients.length > 0) {
