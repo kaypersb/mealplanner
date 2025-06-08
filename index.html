@@ -265,6 +265,16 @@
             text-decoration: underline;
         }
 
+        .variety-info {
+            background: #e8f5e8;
+            border: 1px solid #c3e6c3;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #2d5a2d;
+        }
+
         @media (max-width: 768px) {
             .main-grid {
                 grid-template-columns: 1fr;
@@ -431,7 +441,12 @@
                     { recipe_id: 17, recipe_name: "Pork Barbecue", "  Main Ingredient": "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sweet grilled pork", contributed_by: "", alternatives: "" },
                     { recipe_id: 18, recipe_name: "Vegetable Salad", "  Main Ingredient": "Vegetable", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Fresh mixed vegetables", contributed_by: "", alternatives: "" },
                     { recipe_id: 19, recipe_name: "Beef Tapa", "  Main Ingredient": "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Cured beef strips", contributed_by: "", alternatives: "" },
-                    { recipe_id: 20, recipe_name: "Shrimp Tempura", "  Main Ingredient": "Seafood", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Crispy fried shrimp", contributed_by: "", alternatives: "" }
+                    { recipe_id: 20, recipe_name: "Shrimp Tempura", "  Main Ingredient": "Seafood", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Crispy fried shrimp", contributed_by: "", alternatives: "" },
+                    { recipe_id: 21, recipe_name: "Pinakbet", "  Main Ingredient": "Vegetable", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Mixed vegetable stew", contributed_by: "", alternatives: "" },
+                    { recipe_id: 22, recipe_name: "Chicken Inasal", "  Main Ingredient": "Chicken", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Grilled marinated chicken", contributed_by: "", alternatives: "" },
+                    { recipe_id: 23, recipe_name: "Pork Tocino", "  Main Ingredient": "Pork", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sweet cured pork", contributed_by: "", alternatives: "" },
+                    { recipe_id: 24, recipe_name: "Fish Escabeche", "  Main Ingredient": "Fish", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sweet and sour fish", contributed_by: "", alternatives: "" },
+                    { recipe_id: 25, recipe_name: "Beef Sinigang", "  Main Ingredient": "Beef", recipe_link: "#", Cuisine: "Filipino", recipe_image: "", notes: "Sour beef soup", contributed_by: "", alternatives: "" }
                 ];
                 
                 return false;
@@ -486,6 +501,7 @@
             const mealTypes = ['Breakfast', 'Lunch', 'Dinner'];
             const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
             const plan = {};
+            const usedRecipes = new Set(); // Track used recipes to prevent repeats
 
             // Filter recipes based on preferences
             let filteredRecipes = recipesData.filter(recipe => {
@@ -503,13 +519,38 @@
                 filteredRecipes = recipesData;
             }
 
+            // Create a shuffled copy of filtered recipes for better variety
+            const shuffledRecipes = [...filteredRecipes].sort(() => Math.random() - 0.5);
+
             for (let i = 0; i < days; i++) {
                 const day = dayNames[i];
                 plan[day] = {};
                 
                 mealTypes.forEach(mealType => {
-                    const randomRecipe = filteredRecipes[Math.floor(Math.random() * filteredRecipes.length)];
-                    plan[day][mealType] = randomRecipe;
+                    // Find a recipe that hasn't been used yet
+                    let selectedRecipe = null;
+                    let attempts = 0;
+                    const maxAttempts = filteredRecipes.length * 2; // Allow some flexibility
+                    
+                    while (!selectedRecipe && attempts < maxAttempts) {
+                        const randomIndex = Math.floor(Math.random() * shuffledRecipes.length);
+                        const candidate = shuffledRecipes[randomIndex];
+                        
+                        // For longer meal plans, allow some repetition but prefer variety
+                        const recipeKey = `${candidate.recipe_name}-${mealType}`;
+                        if (!usedRecipes.has(recipeKey) || usedRecipes.size >= filteredRecipes.length) {
+                            selectedRecipe = candidate;
+                            usedRecipes.add(recipeKey);
+                        }
+                        attempts++;
+                    }
+                    
+                    // Fallback to any recipe if we couldn't find an unused one
+                    if (!selectedRecipe) {
+                        selectedRecipe = shuffledRecipes[Math.floor(Math.random() * shuffledRecipes.length)];
+                    }
+                    
+                    plan[day][mealType] = selectedRecipe;
                 });
             }
 
@@ -519,11 +560,29 @@
         function displayMealPlan(mealPlan, days, people) {
             const mealTypes = ['Breakfast', 'Lunch', 'Dinner'];
             
+            // Calculate variety metrics
+            const allMeals = [];
+            Object.values(mealPlan).forEach(day => {
+                mealTypes.forEach(mealType => {
+                    allMeals.push(day[mealType].recipe_name);
+                });
+            });
+            
+            const uniqueMeals = new Set(allMeals);
+            const varietyPercentage = Math.round((uniqueMeals.size / allMeals.length) * 100);
+            
             let html = `
                 <div class="meal-plan">
                     <div class="plan-header">
                         <div class="plan-title">${days}-Day Meal Plan</div>
                         <div class="plan-subtitle">For ${people} ${people === 1 ? 'person' : 'people'}</div>
+                    </div>
+                    
+                    <div class="variety-info">
+                        📊 <strong>Meal Variety:</strong> ${uniqueMeals.size} unique recipes out of ${allMeals.length} total meals (${varietyPercentage}% variety)
+                        ${varietyPercentage >= 80 ? ' - Excellent variety! 🌟' : 
+                          varietyPercentage >= 60 ? ' - Good variety! 👍' : 
+                          ' - Consider trying different ingredients for more variety 💡'}
                     </div>
             `;
 
