@@ -496,6 +496,8 @@
                 .map(checkbox => checkbox.value);
             showLoading();
 
+             console.log('Ingredients chosen', selectedIngredients);
+
             setTimeout(() => {
                 const mealPlan = createMealPlan(days, selectedIngredients, cuisine);
                 displayMealPlan(mealPlan, days);
@@ -520,6 +522,7 @@
                 // If ingredients are selected, recipe must match one of them
                 if (selectedIngredients.length > 0 && 
                     !selectedIngredients.includes(recipe['  Main Ingredient'])) {
+                    console.log("Selected ingredient", selectedIngredients)
                     return false;
                 }
                 if (cuisine && recipe.Cuisine !== cuisine) {
