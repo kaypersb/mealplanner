@@ -141,11 +141,12 @@
         <div class="sidebar">
             <h2>Meal Selector</h2>
             
-            <div class="api-key-setup">
+            <!--<div class="api-key-setup">
                 <label for="apiKey">Google Gemini API Key:</label>
                 <input type="password" id="apiKey" placeholder="Enter your API key">
                 <small>Get your free API key from <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a></small>
             </div>
+        -->
             
             <select id="mealType">
                 <option value="">Select meal type...</option>
@@ -207,7 +208,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const apiKeyInput = document.getElementById('apiKey');
+            const apiKeyInput = 'AIzaSyDtGp9ZLTPKfVenvn-xLjVi4j10tL3WdJc'
             const mealTypeSelect = document.getElementById('mealType');
             const cuisineTypeSelect = document.getElementById('cuisineType');
             const dietaryRestrictionsSelect = document.getElementById('dietaryRestrictions');
