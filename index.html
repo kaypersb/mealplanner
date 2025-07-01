@@ -130,7 +130,7 @@
                 padding: 40px;
             }
             .random-meal-card {
-                max-width: 600px;
+                max-width: 1000px;
                 margin: 0 auto;
             }
         }
@@ -345,7 +345,7 @@
                     randomMeal.innerHTML = `
                         <div class="meal-item">
                             <span class="meal-icon">${getMealIcon(mealType)}</span>
-                            <strong>Your Generated ${mealType.charAt(0).toUpperCase() + mealType.slice(1)} Suggestions:</strong>
+                            <strong>Today's Generated ${mealType.charAt(0).toUpperCase() + mealType.slice(1)} Suggestions:</strong>
                         </div>
                         <div style="white-space: pre-line; margin-top: 15px;">${aiResponse}</div>
                     `;
