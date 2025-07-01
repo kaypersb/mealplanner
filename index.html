@@ -309,13 +309,7 @@
                     prompt += ` and ${additionalPreferences}`;
                 }
 
-                prompt += `. For each meal, provide:
-1. Name of the dish
-2. Ingredients
-3. How to prepare
-4. And Estimated cooking time
-
-Format the response clearly with numbered suggestions. Make the suggestions practical and achievable for home cooking.`;
+                prompt += `. For each meal, provide the name of the dish, ingredients, how to prepare and Estimated cooking time. Format the response clearly with numbered suggestions. But remove the asterisks signs. Make the suggestions practical and achievable for home cooking.`;
 
                 return prompt;
             }
