@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-Powered Meal Selector</title>
+    <title>EZ Meal Planner</title>
     <style>
         * {
             box-sizing: border-box;
@@ -139,7 +139,7 @@
 <body>
     <div class="container">
         <div class="sidebar">
-            <h2>AI Meal Selector</h2>
+            <h2>Meal Selector</h2>
             
             <div class="api-key-setup">
                 <label for="apiKey">Google Gemini API Key:</label>
@@ -180,18 +180,25 @@
                 <option value="dairy-free">Dairy-free</option>
                 <option value="nut-free">Nut-free</option>
             </select>
+
+            <select id="cookingLevel">
+                <option value="">What is the complexity...</option>
+                <option value="vegetarian">Quick and Easy</option>
+                <option value="vegan">Chef Inspired</option>
+                <option value="gluten-free">Gourmet</option>
+            </select>
             
             <input type="text" id="additionalPreferences" placeholder="Additional preferences (e.g., spicy, healthy, quick)">
             
-            <button id="generateMealButton">Generate AI Meal Suggestions</button>
+            <button id="generateMealButton">Generate Your Meal Suggestions</button>
         </div>
         
         <div class="main-content">
-            <h1>Your AI-Generated Meal Suggestions</h1>
+            <h1>Today's Meal Suggestions</h1>
             
             <div class="loading" id="loading">
                 <div class="spinner"></div>
-                <p>AI is generating your meal suggestions...</p>
+                <p>Meal Planner is generating your meal suggestions...</p>
             </div>
             
             <div id="randomMeal" class="random-meal-card"></div>
