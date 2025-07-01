@@ -1,0 +1,350 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;AI-Powered Meal Selector&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>* {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body, html {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Arial', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f0f0f0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.sidebar {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #2c3e50;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 2px 5px rgba(0,0,0,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.main-content {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex-grow: 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow-y: auto;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>h1, h2, h3 {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #2c3e50;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>select, button, input {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 5px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>select, input {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #34495e;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>input::placeholder {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #bdc3c7;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>button {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #3498db;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: background-color 0.3s;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>button:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #2980b9;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>button:disabled {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #95a5a6;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: not-allowed;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.random-meal-card {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 2px 5px rgba(0,0,0,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.meal-item {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.6;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.meal-icon {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 24px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-right: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.loading {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.spinner {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 4px solid #f3f3f3;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-top: 4px solid #3498db;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 40px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 40px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: spin 1s linear infinite;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 auto 10px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes spin {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0% { transform: rotate(0deg); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>100% { transform: rotate(360deg); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.error {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #e74c3c;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #fadbd8;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 5px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.api-key-setup {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #fff3cd;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #ffeaa7;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 5px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@media screen and (min-width: 768px) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.container {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>flex-direction: row;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.sidebar {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>width: 300px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.main-content {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>padding: 40px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.random-meal-card {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>max-width: 600px;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>margin: 0 auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sidebar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2&gt;AI Meal Selector&lt;/h2&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="api-key-setup"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;label for="apiKey"&gt;Google Gemini API Key:&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="password" id="apiKey" placeholder="Enter your API key"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;small&gt;Get your free API key from &lt;a href="https://makersuite.google.com/app/apikey" target="_blank"&gt;Google AI Studio&lt;/a&gt;&lt;/small&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;select id="mealType"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value=""&gt;Select meal type...&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="breakfast"&gt;Breakfast&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="lunch"&gt;Lunch&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="dinner"&gt;Dinner&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="snack"&gt;Snack&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="dessert"&gt;Dessert&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/select&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;select id="cuisineType"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value=""&gt;Select cuisine type...&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="italian"&gt;Italian&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="chinese"&gt;Chinese&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="mexican"&gt;Mexican&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="indian"&gt;Indian&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="japanese"&gt;Japanese&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="french"&gt;French&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="thai"&gt;Thai&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="american"&gt;American&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="mediterranean"&gt;Mediterranean&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="filipino"&gt;Filipino&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/select&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;select id="dietaryRestrictions"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value=""&gt;Any dietary restrictions...&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="vegetarian"&gt;Vegetarian&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="vegan"&gt;Vegan&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="gluten-free"&gt;Gluten-free&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="low-carb"&gt;Low-carb&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="keto"&gt;Keto&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="dairy-free"&gt;Dairy-free&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="nut-free"&gt;Nut-free&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/select&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="additionalPreferences" placeholder="Additional preferences (e.g., spicy, healthy, quick)"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button id="generateMealButton"&gt;Generate AI Meal Suggestions&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="main-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1&gt;Your AI-Generated Meal Suggestions&lt;/h1&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="loading" id="loading"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="spinner"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p&gt;AI is generating your meal suggestions...&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="randomMeal" class="random-meal-card"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.addEventListener('DOMContentLoaded', function() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const apiKeyInput = document.getElementById('apiKey');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const mealTypeSelect = document.getElementById('mealType');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const cuisineTypeSelect = document.getElementById('cuisineType');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const dietaryRestrictionsSelect = document.getElementById('dietaryRestrictions');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const additionalPreferencesInput = document.getElementById('additionalPreferences');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const generateMealButton = document.getElementById('generateMealButton');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const randomMeal = document.getElementById('randomMeal');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const loading = document.getElementById('loading');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Load saved API key</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const savedApiKey = localStorage.getItem('geminiApiKey');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (savedApiKey) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>apiKeyInput.value = savedApiKey;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Save API key when changed</p>
+<p class="p1"><span class="Apple-converted-space">            </span>apiKeyInput.addEventListener('change', function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>localStorage.setItem('geminiApiKey', this.value);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function getMealIcon(mealType) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const icons = {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>breakfast: '🍳',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>lunch: '🥪',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>dinner: '🍽️',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>snack: '🥨',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>dessert: '🍰'</p>
+<p class="p1"><span class="Apple-converted-space">                </span>};</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return icons[mealType] || '🍽️';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function showLoading() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>loading.style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>randomMeal.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>generateMealButton.disabled = true;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function hideLoading() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>loading.style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>generateMealButton.disabled = false;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function showError(message) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>randomMeal.innerHTML = `&lt;div class="error"&gt;${message}&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>async function callGeminiAPI(prompt) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const apiKey = apiKeyInput.value.trim();</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!apiKey) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>throw new Error('Please enter your Google Gemini API key');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>headers: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>'Content-Type': 'application/json',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>body: JSON.stringify({</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>contents: [{</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>parts: [{</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>text: prompt</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>}]</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}]</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>})</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!response.ok) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const errorData = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>throw new Error(errorData.error?.message || 'Failed to get response from Gemini API');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const data = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return data.candidates[0].content.parts[0].text;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function buildPrompt() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const mealType = mealTypeSelect.value;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const cuisineType = cuisineTypeSelect.value;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const dietaryRestrictions = dietaryRestrictionsSelect.value;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const additionalPreferences = additionalPreferencesInput.value.trim();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>let prompt = `Generate 3 specific ${mealType || 'meal'} suggestions`;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (cuisineType) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>prompt += ` from ${cuisineType} cuisine`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (dietaryRestrictions) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>prompt += ` that are ${dietaryRestrictions}`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (additionalPreferences) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>prompt += ` and ${additionalPreferences}`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>prompt += `. For each meal, provide:</p>
+<p class="p1">1. Name of the dish</p>
+<p class="p1">2. Brief description (2-3 sentences)</p>
+<p class="p1">3. Main ingredients (3-5 items)</p>
+<p class="p1">4. Estimated cooking time</p>
+<p class="p2"><br></p>
+<p class="p1">Format the response clearly with numbered suggestions.`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>return prompt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>async function generateAIMeal() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const mealType = mealTypeSelect.value;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!mealType) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showError('Please select a meal type first.');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>showLoading();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const prompt = buildPrompt();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const aiResponse = await callGeminiAPI(prompt);</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>randomMeal.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="meal-item"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="meal-icon"&gt;${getMealIcon(mealType)}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;strong&gt;AI-Generated ${mealType.charAt(0).toUpperCase() + mealType.slice(1)} Suggestions:&lt;/strong&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div style="white-space: pre-line; margin-top: 15px;"&gt;${aiResponse}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showError(`Error: ${error.message}`);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} finally {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>hideLoading();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>generateMealButton.addEventListener('click', generateAIMeal);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
