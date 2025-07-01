@@ -295,7 +295,7 @@
                 const dietaryRestrictions = dietaryRestrictionsSelect.value;
                 const additionalPreferences = additionalPreferencesInput.value.trim();
 
-                let prompt = `Generate 3 specific ${mealType || 'meal'} suggestions`;
+                let prompt = `Give me 3 ${mealType || 'meal'} suggestions`;
                 
                 if (cuisineType) {
                     prompt += ` from ${cuisineType} cuisine`;
@@ -311,9 +311,9 @@
 
                 prompt += `. For each meal, provide:
 1. Name of the dish
-2. Brief description (2-3 sentences)
-3. Main ingredients (3-5 items)
-4. Estimated cooking time
+2. Ingredients
+3. How to prepare
+4. And Estimated cooking time
 
 Format the response clearly with numbered suggestions. Make the suggestions practical and achievable for home cooking.`;
 
