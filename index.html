@@ -212,6 +212,7 @@
             const cuisineTypeSelect = document.getElementById('cuisineType');
             const dietaryRestrictionsSelect = document.getElementById('dietaryRestrictions');
             const additionalPreferencesInput = document.getElementById('additionalPreferences');
+            const cookingLevelSelect = document.getElementById('cookingLevel');
             const generateMealButton = document.getElementById('generateMealButton');
             const randomMeal = document.getElementById('randomMeal');
             const loading = document.getElementById('loading');
@@ -301,7 +302,7 @@
                 const cuisineType = cuisineTypeSelect.value;
                 const dietaryRestrictions = dietaryRestrictionsSelect.value;
                 const additionalPreferences = additionalPreferencesInput.value.trim();
-                const cookingLevel = cookingLevel.value.trim(); 
+                const cookingLevel = cookingLevelSelect.value.trim(); 
 
                 let prompt = `Give me 3 ${mealType || 'meal'} suggestions`;
                 
