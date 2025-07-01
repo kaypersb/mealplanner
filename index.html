@@ -322,7 +322,8 @@
                     prompt += ` and ${additionalPreferences}`;
                 }
 
-                prompt += `. For each meal, provide the name of the dish, exact ingredients with exact measurements, how to prepare and Estimated cooking time. Format the response clearly and remove the asterisks signs. Make the suggestions practical and achievable for home cooking.`;
+                prompt += `. For each meal, provide the name of the dish, exact ingredients with exact measurements, how to prepare and Estimated cooking time. 
+                Format the response clearly in html format and remove the asterisks signs. Make the suggestions practical and achievable for home cooking.`;
 
                 return prompt;
             }
@@ -344,7 +345,7 @@
                     randomMeal.innerHTML = `
                         <div class="meal-item">
                             <span class="meal-icon">${getMealIcon(mealType)}</span>
-                            <strong>AI-Generated ${mealType.charAt(0).toUpperCase() + mealType.slice(1)} Suggestions:</strong>
+                            <strong>Your Generated ${mealType.charAt(0).toUpperCase() + mealType.slice(1)} Suggestions:</strong>
                         </div>
                         <div style="white-space: pre-line; margin-top: 15px;">${aiResponse}</div>
                     `;
