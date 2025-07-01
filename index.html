@@ -301,6 +301,7 @@
                 const cuisineType = cuisineTypeSelect.value;
                 const dietaryRestrictions = dietaryRestrictionsSelect.value;
                 const additionalPreferences = additionalPreferencesInput.value.trim();
+                const cookingLevel = cookingLevel.value.trim(); 
 
                 let prompt = `Give me 3 ${mealType || 'meal'} suggestions`;
                 
@@ -310,6 +311,10 @@
                 
                 if (dietaryRestrictions) {
                     prompt += ` that are ${dietaryRestrictions}`;
+                }
+
+                if (cookingLevel) {
+                    prompt += ` and ${cookingLevel}`;
                 }
                 
                 if (additionalPreferences) {
