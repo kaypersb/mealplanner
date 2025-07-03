@@ -326,8 +326,9 @@
                     prompt += ` and ${additionalPreferences}`;
                 }
 
-                prompt += `. For each meal, provide the name of the dish, exact ingredients with exact measurements, how to prepare and Estimated cooking time. 
-                Format the response clearly and remove the asterisks signs. Make the suggestions practical and achievable for home cooking.`;
+                prompt += `. For each meal, format the response in tabular with meal name, cuisine, difficulty level, ingredients with measurement, how to prepare and 
+                estimated cooking time. Provide the name of the 3 recipes first then list down the details. 
+                Make the suggestions practical and achievable for home cooking.`;
 
                 return prompt;
             }
